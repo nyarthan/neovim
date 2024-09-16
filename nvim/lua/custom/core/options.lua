@@ -1,8 +1,4 @@
-NF = {
-	["nf-md-keyboard_return"] = "󰌑",
-	["nf-md-keyboard_tab"] = "󰌒 ",
-	["nf-md-keyboard_space"] = "󱁐",
-}
+local Symbols = require("custom.symbols")
 
 local g = vim.g
 local opt = vim.opt
@@ -44,17 +40,15 @@ opt.splitright = true
 opt.splitbelow = true
 opt.list = true
 opt.listchars = {
-	eol = NF["nf-md-keyboard_return"],
-	tab = NF["nf-md-keyboard_tab"],
-	trail = "·",
-	nbsp = NF["nf-md-keyboard_space"],
+	eol = Symbols.nf.md_keyboard_return,
+	tab = Symbols.nf.md_keyboard_tab,
+	trail = Symbols.unicode.middle_dot,
+	nbsp = Symbols.nf.md_keyboard_space,
 	extends = "<",
 	precedes = ">",
-	conceal = "┊",
+	conceal = Symbols.unicode.light_quadruple_dash_vertical,
 }
 opt.inccommand = "split"
 opt.cursorline = true
 opt.scrolloff = 10
 opt.hlsearch = true
-
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")

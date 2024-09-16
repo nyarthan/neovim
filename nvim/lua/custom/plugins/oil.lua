@@ -1,3 +1,8 @@
+local Util = require("custom.util")
+local Color = require("custom.color")
+
+local key_cmd = Util.key_cmd
+
 return {
 	"stevearc/oil.nvim",
 	opts = {
@@ -10,9 +15,9 @@ return {
 	keys = {
 		{
 			"-",
-			"<CMD>Oil<CR>",
+			key_cmd("Oil"),
 			mode = "n",
-			desc = "Open Parent Directory",
+			desc = string.format("%s Open parent directory", Color.green("[OIL]")),
 		},
 	},
 }

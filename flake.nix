@@ -38,6 +38,7 @@
           vimPlugins.plenary-nvim
           vimPlugins.oil-nvim
           vimPlugins.nvim-web-devicons
+          vimPlugins.baleia-nvim
         ];
 
         lazyPathFile = pkgs.writeText "lazy-patches.lua" ''
