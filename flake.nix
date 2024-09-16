@@ -36,7 +36,8 @@
           vimPlugins.telescope-nvim
           vimPlugins.nvim-treesitter.withAllGrammars
           vimPlugins.plenary-nvim
-          vimPlugins.todo-comments-nvim
+          vimPlugins.oil-nvim
+          vimPlugins.nvim-web-devicons
         ];
 
         lazyPathFile = pkgs.writeText "lazy-patches.lua" ''

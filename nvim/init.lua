@@ -1,26 +1,17 @@
-vim.g.mapleader = " "
+require("custom.core.options")
+require("custom.core.keymaps")
 
-local lazy = require("lazy")
+require("lazy").setup({
+	require("custom.plugins.telescope"),
+	require("custom.plugins.oil"),
 
-lazy.setup({
-	{
-		"lazy.nvim",
-	},
-	{
-		"telescope.nvim",
-		lazy = true,
-		config = function() end,
-		dependencies = { "plenary.nvim" },
-		cmd = "Telescope",
-	},
-	{
-		"nvim-treesitter",
-		main = "nvim-treesitter.configs",
-		opts = {},
-	},
-	{ "plenary.nvim", lazy = true },
-	{ "folke/todo-comments.nvim", lazy = false },
+	-- TODO: dependencies should be handled by nix + lazy patch
+	{ "plenary.nvim" },
+	{ "nvim-web-devicons" },
 }, {
+	defaults = {
+		lazy = true,
+	},
 	install = {
 		missing = false,
 	},
@@ -30,6 +21,3 @@ lazy.setup({
 		},
 	},
 })
-
--- require('theme')
--- require('nvim-treesitter')
