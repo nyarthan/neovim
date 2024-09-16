@@ -22,30 +22,71 @@
     eachSystem = f:
       lib.foldAttrs lib.mergeAttrs {}
       (map (system: lib.mapAttrs (_: v: {${system} = v;}) (f system)) systems);
+
+    nvimAppName = "nvim-${builtins.substring 7 (builtins.stringLength self.narHash) self.narHash}";
   in
     eachSystem (
       system: let
         pkgs = nixpkgs.legacyPackages.${system};
 
         inherit (pkgs) vimPlugins;
+
         plugins = [
           vimPlugins.lazy-nvim
           vimPlugins.telescope-nvim
           vimPlugins.nvim-treesitter.withAllGrammars
-          # Add more plugins here if needed
+          vimPlugins.plenary-nvim
+          vimPlugins.todo-comments-nvim
         ];
 
-        # Construct NIX_PLUGIN_PATHS in Nix
-        nixPluginPaths = lib.concatStringsSep ":" (map (plugin: "${plugin}/share/vim-plugins/*") plugins);
+        lazyPathFile = pkgs.writeText "lazy-patches.lua" ''
+          local pluginPaths = {
+            ${lib.concatStringsSep ",\n" (map (plugin: ''["${plugin.pname}"] = "${plugin}"'') plugins)}
+          }
 
-        # Construct LUA_PATH in Nix
-        nixLuaPaths = lib.concatStringsSep ";" (lib.concatLists (map (plugin: [
-            "${plugin}/lua/?.lua"
-            "${plugin}/lua/?/init.lua"
-          ])
-          plugins));
+          ${builtins.readFile ./lazy-patches.lua}
+        '';
+
+        nixLuaPaths = lib.concatStringsSep ";" ([
+            "${vimPlugins.lazy-nvim}/lua/?.lua"
+            "${vimPlugins.lazy-nvim}/lua/?/init.lua"
+          ]
+          ++ ["${lazyPathFile}"]);
+
+        neovim = pkgs.stdenv.mkDerivation {
+          inherit (pkgs.neovim) version;
+
+          pname = "neovim";
+
+          dontUnpack = true;
+
+          nativeBuildInputs = [pkgs.makeWrapper];
+
+          buildInputs = [pkgs.neovim] ++ plugins;
+
+          installPhase = ''
+            mkdir -p $out/bin
+            mkdir -p $out/config/${nvimAppName}/nvim
+
+            cp ${pkgs.neovim}/bin/nvim $out/bin/nvim
+            cp -r ${./nvim}/* $out/config/${nvimAppName}/
+
+            wrapProgram $out/bin/nvim \
+              --set NVIM_APPNAME ${nvimAppName} \
+              --set XDG_CONFIG_HOME $out/config \
+              --set LUA_PATH '${nixLuaPaths}' \
+              --add-flags "--cmd 'lua require([[lazy-patch]])'" \
+          '';
+
+          meta = {
+            description = "Jannis' Neovim config";
+            homepage = "https://github.com/nyarthan/neovim";
+            license = lib.licenses.asl20;
+            platforms = lib.platforms.linux ++ lib.platforms.darwin;
+          };
+        };
       in {
-        packages.default = pkgs.neovim;
+        packages.default = neovim;
 
         apps.default = {
           type = "app";
@@ -58,19 +99,6 @@
               self.packages.${system}.default
             ]
             ++ plugins;
-
-          shellHook = ''
-            export NIX_PLUGIN_PATHS='${nixPluginPaths}'
-            export LUA_PATH='${nixLuaPaths}'
-
-            # Set XDG_CONFIG_HOME to the current directory
-            export XDG_CONFIG_HOME=$(pwd)
-
-            # Optional: Print the environment variables for debugging
-            echo "NIX_PLUGIN_PATHS is set to: $NIX_PLUGIN_PATHS"
-            echo "LUA_PATH is set to: $LUA_PATH"
-            echo "XDG_CONFIG_HOME is set to: $XDG_CONFIG_HOME"
-          '';
         };
       }
     );
