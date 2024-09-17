@@ -15,6 +15,7 @@ require("lazy").setup({
 	{ "telescope-fzf-native.nvim" },
 	{ "nvim-web-devicons" },
 	{ "cmp-path" },
+	{ "cmp-buffer" },
 	{ "luasnip" },
 }, {
 	defaults = {

@@ -44,6 +44,7 @@
           vimPlugins.catppuccin-nvim
           vimPlugins.nvim-cmp
           vimPlugins.cmp-path
+          vimPlugins.cmp-buffer
           vimPlugins.luasnip
         ];
 
