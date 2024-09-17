@@ -16,7 +16,7 @@ end
 
 return {
 	"gitsigns.nvim",
-	lazy = false,
+	event = "User GitRepoDetected",
 	opts = {
 		signs = {
 			add = { text = Symbols.nf.oct_diff_added },
