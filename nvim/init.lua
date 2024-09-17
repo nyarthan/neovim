@@ -5,6 +5,7 @@ require("lazy").setup({
 	require("custom.plugins.telescope"),
 	require("custom.plugins.oil"),
 	require("custom.plugins.baleia"),
+	require("custom.plugins.gitsigns"),
 
 	-- TODO: dependencies should be handled by nix + lazy patch
 	{ "plenary.nvim" },

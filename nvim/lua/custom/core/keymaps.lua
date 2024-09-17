@@ -2,9 +2,9 @@ local Util = require("custom.util")
 
 local bind = Util.bind
 local nmap = Util.nmap
-local key_cmd = Util.key_cmd
+local make_cmd = Util.make_cmd
 
-nmap("<Esc>", key_cmd("nohlsearch"), { desc = "Stop highlighting current search" })
+nmap("<Esc>", make_cmd("nohlsearch"), { desc = "Stop highlighting current search" })
 
 nmap("<Left>", bind(print, "Use h to move left"), { desc = [[Arrow navigation is "disabled"]] })
 nmap("<Right>", bind(print, "Use l to move right"), { desc = [[Arrow navigation is "disabled"]] })

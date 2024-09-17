@@ -39,15 +39,21 @@
           vimPlugins.oil-nvim
           vimPlugins.nvim-web-devicons
           vimPlugins.baleia-nvim
+          vimPlugins.gitsigns-nvim
         ];
 
-        lazyPathFile = pkgs.writeText "lazy-patches.lua" ''
-          local pluginPaths = {
-            ${lib.concatStringsSep ",\n" (map (plugin: ''["${plugin.pname}"] = "${plugin}"'') plugins)}
-          }
+        lazyPathFile =
+          pkgs.writeText "lazy-patches.lua"
+          /*
+          lua
+          */
+          ''
+            local pluginPaths = {
+              ${lib.concatStringsSep ",\n" (map (plugin: ''["${plugin.pname}"] = "${plugin}"'') plugins)}
+            }
 
-          ${builtins.readFile ./lazy-patches.lua}
-        '';
+            ${builtins.readFile ./lazy-patches.lua}
+          '';
 
         nixLuaPaths = lib.concatStringsSep ";" ([
             "${vimPlugins.lazy-nvim}/lua/?.lua"
@@ -64,7 +70,7 @@
 
           nativeBuildInputs = [pkgs.makeWrapper];
 
-          buildInputs = [pkgs.neovim] ++ plugins;
+          buildInputs = [pkgs.neovim pkgs.lua-language-server] ++ plugins;
 
           installPhase = ''
             mkdir -p $out/bin

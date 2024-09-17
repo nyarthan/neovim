@@ -1,8 +1,6 @@
 local Util = require("custom.util")
 local Color = require("custom.color")
 
-local key_cmd = Util.key_cmd
-
 return {
 	"stevearc/oil.nvim",
 	opts = {
@@ -15,7 +13,7 @@ return {
 	keys = {
 		{
 			"-",
-			key_cmd("Oil"),
+			Util.make_cmd("Oil"),
 			mode = "n",
 			desc = string.format("%s Open parent directory", Color.green("[OIL]")),
 		},
