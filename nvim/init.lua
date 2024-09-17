@@ -9,6 +9,7 @@ require("lazy").setup({
 
 	-- TODO: dependencies should be handled by nix + lazy patch
 	{ "plenary.nvim" },
+	{ "telescope-fzf-native.nvim" },
 	{ "nvim-web-devicons" },
 }, {
 	defaults = {

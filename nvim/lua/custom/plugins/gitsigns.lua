@@ -146,9 +146,9 @@ return {
 		},
 		{
 			"ih",
-			mode = {"o", "x"},
+			mode = { "o", "x" },
 			desc = key_desc("Select inside hunk"),
-			Util.make_ex_cmd("Gitsigns select_hunk")
-		}
+			Util.make_ex_cmd("Gitsigns select_hunk"),
+		},
 	},
 }

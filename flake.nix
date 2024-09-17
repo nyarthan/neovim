@@ -34,6 +34,7 @@
         plugins = [
           vimPlugins.lazy-nvim
           vimPlugins.telescope-nvim
+          vimPlugins.telescope-fzf-native-nvim
           vimPlugins.nvim-treesitter.withAllGrammars
           vimPlugins.plenary-nvim
           vimPlugins.oil-nvim
@@ -70,7 +71,7 @@
 
           nativeBuildInputs = [pkgs.makeWrapper];
 
-          buildInputs = [pkgs.neovim pkgs.lua-language-server] ++ plugins;
+          buildInputs = [pkgs.neovim pkgs.lua-language-server pkgs.ripgrep pkgs.fd] ++ plugins;
 
           installPhase = ''
             mkdir -p $out/bin
