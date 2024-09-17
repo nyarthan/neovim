@@ -8,11 +8,14 @@ require("lazy").setup({
 	require("custom.plugins.gitsigns"),
 	require("custom.plugins.treesitter"),
 	require("custom.plugins.colorscheme"),
+	require("custom.plugins.completion"),
 
 	-- TODO: dependencies should be handled by nix + lazy patch
 	{ "plenary.nvim" },
 	{ "telescope-fzf-native.nvim" },
 	{ "nvim-web-devicons" },
+	{ "cmp-path" },
+	{ "luasnip" },
 }, {
 	defaults = {
 		lazy = true,

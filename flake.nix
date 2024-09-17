@@ -42,6 +42,9 @@
           vimPlugins.baleia-nvim
           vimPlugins.gitsigns-nvim
           vimPlugins.catppuccin-nvim
+          vimPlugins.nvim-cmp
+          vimPlugins.cmp-path
+          vimPlugins.luasnip
         ];
 
         lazyPathFile =
@@ -50,6 +53,19 @@
           lua
           */
           ''
+            -- I have no idea why but adding it in LUA_CPATH is not enough...
+            package.preload["jsregexp.core"] = package.loadlib("${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/jsregexp/core.so", "luaopen_jsregexp_core");
+
+            local original_require = require
+
+            require = function(module)
+              -- luasnip does some preloading shenanigans - this prevents it
+              if module == "luasnip.util.jsregexp" then
+                return original_require("jsregexp")
+              end
+              return original_require(module)
+            end
+
             local pluginPaths = {
               ${lib.concatStringsSep ",\n" (map (plugin: ''["${plugin.pname}"] = "${plugin}"'') plugins)}
             }
@@ -57,11 +73,16 @@
             ${builtins.readFile ./lazy-patches.lua}
           '';
 
-        nixLuaPaths = lib.concatStringsSep ";" ([
+        luaPath = lib.concatStringsSep ";" ([
             "${vimPlugins.lazy-nvim}/lua/?.lua"
             "${vimPlugins.lazy-nvim}/lua/?/init.lua"
+            "${pkgs.luajitPackages.jsregexp}/share/lua/5.1/?.lua"
           ]
           ++ ["${lazyPathFile}"]);
+
+        luaCPath = lib.concatStringsSep ";" [
+          "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so"
+        ];
 
         neovim = pkgs.stdenv.mkDerivation {
           inherit (pkgs.neovim) version;
@@ -72,7 +93,14 @@
 
           nativeBuildInputs = [pkgs.makeWrapper];
 
-          buildInputs = [pkgs.neovim pkgs.lua-language-server pkgs.ripgrep pkgs.fd] ++ plugins;
+          buildInputs =
+            [
+              pkgs.neovim
+              pkgs.lua-language-server
+              pkgs.ripgrep
+              pkgs.fd
+            ]
+            ++ plugins;
 
           installPhase = ''
             mkdir -p $out/bin
@@ -84,7 +112,8 @@
             wrapProgram $out/bin/nvim \
               --set NVIM_APPNAME ${nvimAppName} \
               --set XDG_CONFIG_HOME $out/config \
-              --set LUA_PATH '${nixLuaPaths}' \
+              --set LUA_PATH '${luaPath}' \
+              --set LUA_CPATH '${luaCPath}' \
               --add-flags "--cmd 'lua require([[lazy-patch]])'" \
           '';
 
