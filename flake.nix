@@ -41,6 +41,7 @@
           vimPlugins.nvim-web-devicons
           vimPlugins.baleia-nvim
           vimPlugins.gitsigns-nvim
+          vimPlugins.catppuccin-nvim
         ];
 
         lazyPathFile =
