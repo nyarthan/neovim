@@ -10,6 +10,7 @@ require("lazy").setup({
 	require("custom.plugins.colorscheme"),
 	require("custom.plugins.completion"),
 	require("custom.plugins.comment"),
+	require("custom.plugins.lsp"),
 
 	-- TODO: dependencies should be handled by nix + lazy patch
 	{ "plenary.nvim" },
@@ -19,6 +20,8 @@ require("lazy").setup({
 	{ "cmp-buffer" },
 	{ "luasnip" },
 	{ "nvim-ts-context-commentstring" },
+	{ "j-hui/fidget.nvim" },
+	{ "hrsh7th/cmp-nvim-lsp" },
 }, {
 	defaults = {
 		lazy = true,

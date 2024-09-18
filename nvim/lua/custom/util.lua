@@ -19,6 +19,79 @@ M.bind = function(fn, ...)
 	end
 end
 
+--- @generic T
+--- @param list T[] List of items to be deduplicated
+--- @return T[] A new list with duplicate items removed
+M.dedupe = function(list)
+	local seen = {}
+	local result = {}
+
+	for _, item in ipairs(list) do
+		if not seen[item] then
+			seen[item] = true
+			table.insert(result, item)
+		end
+	end
+
+	return result
+end
+
+--- @generic T
+--- @param item T|T[] A single item or a list of items
+--- @return T[] A list of items, ensuring that a single item is wrapped in a list
+M.to_list = function(item)
+	if type(item) == "table" then
+		return item
+	else
+		return { item }
+	end
+end
+
+--- @generic T
+--- @param list1 T[] The first list of items
+--- @param list2 T[] The second list of items
+--- @return T[] A new list containing all items from list1 followed by all items from list2
+M.list_concat = function(list1, list2)
+	local result = {}
+
+	for _, item in ipairs(list1) do
+		table.insert(result, item)
+	end
+
+	for _, item in ipairs(list2) do
+		table.insert(result, item)
+	end
+
+	return result
+end
+
+--- @class M.make_cmp.Opts: vim.keymap.set.Opts
+--- @inlinedoc
+---
+--- Mode short-name, see |nvim_set_keymap()|.
+--- Can also be list of modes to create mapping on multiple modes.
+--- @field mode? string|string[]
+
+--- @param initial_opts? M.make_cmp.Opts
+M.make_map = function(initial_opts)
+	initial_opts = initial_opts or {}
+	local initial_mode = M.to_list(initial_opts.mode --[[ @as string ]])
+	initial_opts.mode = nil
+
+	--- @param lhs string           Left-hand side |{lhs}| of the mapping.
+	--- @param rhs string|function  Right-hand side |{rhs}| of the mapping, can be a Lua function.
+	--- @param opts? M.make_cmp.Opts
+	return function(lhs, rhs, opts)
+		opts = opts or {}
+		local mode = M.to_list(opts.mode --[[ @as string ]])
+		opts.mode = nil
+
+		local final_mode = M.dedupe(M.list_concat(initial_mode, mode))
+
+		vim.keymap.set(final_mode, lhs, rhs, vim.tbl_extend("force", initial_opts or {}, opts or {}))
+	end
+end
+
 --- Create a normal mode keymap by binding a function and passing the mode "n" (normal mode).
 ---
 --- @type fun(lhs: string, rhs: string|function, opts?: vim.keymap.set.Opts): boolean

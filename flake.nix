@@ -48,6 +48,9 @@
           vimPlugins.luasnip
           vimPlugins.comment-nvim
           vimPlugins.nvim-ts-context-commentstring
+          vimPlugins.nvim-lspconfig
+          vimPlugins.fidget-nvim
+          vimPlugins.cmp-nvim-lsp
         ];
 
         lazyPathFile =
@@ -102,6 +105,7 @@
               pkgs.lua-language-server
               pkgs.ripgrep
               pkgs.fd
+              pkgs.lua-language-server
             ]
             ++ plugins;
 
