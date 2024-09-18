@@ -46,6 +46,8 @@
           vimPlugins.cmp-path
           vimPlugins.cmp-buffer
           vimPlugins.luasnip
+          vimPlugins.comment-nvim
+          vimPlugins.nvim-ts-context-commentstring
         ];
 
         lazyPathFile =

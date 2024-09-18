@@ -9,6 +9,7 @@ require("lazy").setup({
 	require("custom.plugins.treesitter"),
 	require("custom.plugins.colorscheme"),
 	require("custom.plugins.completion"),
+	require("custom.plugins.comment"),
 
 	-- TODO: dependencies should be handled by nix + lazy patch
 	{ "plenary.nvim" },
@@ -17,6 +18,7 @@ require("lazy").setup({
 	{ "cmp-path" },
 	{ "cmp-buffer" },
 	{ "luasnip" },
+	{ "nvim-ts-context-commentstring" },
 }, {
 	defaults = {
 		lazy = true,
