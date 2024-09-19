@@ -53,6 +53,7 @@
           vimPlugins.cmp-nvim-lsp
           vimPlugins.nvim-autopairs
           vimPlugins.guess-indent-nvim
+          vimPlugins.lualine-nvim
         ];
 
         lazyPathFile =
