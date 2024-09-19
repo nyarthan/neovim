@@ -21,7 +21,7 @@ return {
   },
   config = function()
     vim.api.nvim_create_autocmd("LspAttach", {
-      group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+      group = vim.api.nvim_create_augroup("LspAttach", { clear = true }),
       callback = function(event)
         local t_builtin = require "telescope.builtin"
 
@@ -41,7 +41,7 @@ return {
         if
           client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight)
         then
-          local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
+          local highlight_augroup = vim.api.nvim_create_augroup("LspHighlight", { clear = false })
           vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
             buffer = event.buf,
             group = highlight_augroup,
@@ -54,13 +54,6 @@ return {
             callback = vim.lsp.buf.clear_references,
           })
 
-          vim.api.nvim_create_autocmd("LspDetach", {
-            group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
-            callback = function(event2)
-              vim.lsp.buf.clear_references()
-              vim.api.nvim_clear_autocmds { group = "lsp-highlight", buffer = event2.buf }
-            end,
-          })
         end
 
         if
@@ -68,6 +61,24 @@ return {
         then
           require("nvim-navic").attach(client, event.buf)
         end
+
+        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
+          vim.api.nvim_create_autocmd("BufWritePost", {
+            group = vim.api.nvim_create_augroup("LspAutoformat", {clear = true}),
+            callback = function()
+              vim.lsp.buf.format()
+            end
+          })
+        end
+
+          vim.api.nvim_create_autocmd("LspDetach", {
+            group = vim.api.nvim_create_augroup("LspDetach", { clear = true }),
+            callback = function(event2)
+              vim.lsp.buf.clear_references()
+              vim.api.nvim_clear_autocmds { group = "LspHighlight", buffer = event2.buf }
+              vim.api.nvim_clear_autocmds { group = "LspAutoformat", buffer = event2.buf }
+            end,
+          })
       end,
     })
 
