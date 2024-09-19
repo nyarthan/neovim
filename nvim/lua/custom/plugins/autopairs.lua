@@ -1,5 +1,5 @@
 return {
-	"nvim-autopairs",
-	event = "InsertEnter",
-	config = true,
+  "nvim-autopairs",
+  event = "InsertEnter",
+  config = true,
 }

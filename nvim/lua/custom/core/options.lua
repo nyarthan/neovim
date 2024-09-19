@@ -1,4 +1,4 @@
-local Symbols = require("custom.symbols")
+local Symbols = require "custom.symbols"
 
 local g = vim.g
 local opt = vim.opt
@@ -40,13 +40,13 @@ opt.splitright = true
 opt.splitbelow = true
 opt.list = true
 opt.listchars = {
-	eol = Symbols.nf.md_keyboard_return,
-	tab = Symbols.nf.md_keyboard_tab,
-	trail = Symbols.unicode.middle_dot,
-	nbsp = Symbols.nf.md_keyboard_space,
-	extends = "<",
-	precedes = ">",
-	conceal = Symbols.unicode.light_quadruple_dash_vertical,
+  eol = Symbols.nf.md_keyboard_return,
+  tab = Symbols.nf.md_keyboard_tab,
+  trail = Symbols.unicode.middle_dot,
+  nbsp = Symbols.nf.md_keyboard_space,
+  extends = "<",
+  precedes = ">",
+  conceal = Symbols.unicode.light_quadruple_dash_vertical,
 }
 opt.inccommand = "split"
 opt.cursorline = true

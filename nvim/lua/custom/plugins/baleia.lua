@@ -1,7 +1,5 @@
 return {
-	"baleia.nvim",
-	lazy = false,
-	config = function()
-		vim.g.baleia = require("baleia").setup({})
-	end,
+  "baleia.nvim",
+  lazy = false,
+  config = function() vim.g.baleia = require("baleia").setup {} end,
 }
