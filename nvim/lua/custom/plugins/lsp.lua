@@ -62,6 +62,12 @@ return {
             end,
           })
         end
+
+        if
+          client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentSymbol)
+        then
+          require("nvim-navic").attach(client, event.buf)
+        end
       end,
     })
 

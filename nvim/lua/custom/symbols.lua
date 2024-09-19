@@ -16,6 +16,7 @@ M.nf = {
   oct_file_diff = "",
   oct_dot = "",
   oct_question = "",
+  cod_root_folder = "",
 }
 
 M.emoji = {}

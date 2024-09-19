@@ -25,6 +25,7 @@ require("lazy").setup({
   { "nvim-ts-context-commentstring" },
   { "j-hui/fidget.nvim" },
   { "hrsh7th/cmp-nvim-lsp" },
+  { "nvim-navic" },
 }, {
   defaults = {
     lazy = true,
