@@ -11,6 +11,8 @@ require("lazy").setup({
 	require("custom.plugins.completion"),
 	require("custom.plugins.comment"),
 	require("custom.plugins.lsp"),
+	require("custom.plugins.autopairs"),
+	require("custom.plugins.indent"),
 
 	-- TODO: dependencies should be handled by nix + lazy patch
 	{ "plenary.nvim" },
