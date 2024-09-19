@@ -104,10 +104,6 @@
           buildInputs =
             [
               pkgs.neovim
-              pkgs.lua-language-server
-              pkgs.ripgrep
-              pkgs.fd
-              pkgs.lua-language-server
             ]
             ++ plugins;
 
@@ -117,8 +113,15 @@
 
             cp ${pkgs.neovim}/bin/nvim $out/bin/nvim
             cp -r ${./nvim}/* $out/config/${nvimAppName}/
+            cp -r ${./efm-langserver} $out/config/efm-langserver
 
             wrapProgram $out/bin/nvim \
+              --prefix PATH : ${lib.makeBinPath [
+              pkgs.ripgrep
+              pkgs.fd
+              pkgs.lua-language-server
+              pkgs.efm-langserver
+            ]} \
               --set NVIM_APPNAME ${nvimAppName} \
               --set XDG_CONFIG_HOME $out/config \
               --set LUA_PATH '${luaPath}' \

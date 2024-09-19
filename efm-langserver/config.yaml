@@ -1,0 +1,11 @@
+# TODO: move this file to lsp server settings in lua - need to debug this - efm is strange
+
+version: 2
+
+root-markers:
+  - .git/
+
+languages:
+  lua:
+    - format-command: 'stylua --color Never ${--range-start:charStart} ${--range-end:charEnd} -'
+      format-stdin: true

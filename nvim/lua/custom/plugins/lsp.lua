@@ -72,8 +72,14 @@ return {
 
 		for _, server in ipairs(servers) do
 			require("lspconfig")[server].setup({
+				init_options = { documentFormatting = false },
 				capabilities = capabilities,
 			})
 		end
+
+		require("lspconfig").efm.setup({
+			capabilities = capabilities,
+			init_options = { documentFormatting = true },
+		})
 	end,
 }
