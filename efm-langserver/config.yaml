@@ -9,3 +9,6 @@ languages:
   lua:
     - format-command: 'stylua --color Never ${--range-start:charStart} ${--range-end:charEnd} -'
       format-stdin: true
+  nix:
+    - format-command: 'nixfmt'
+      format-stdin: true

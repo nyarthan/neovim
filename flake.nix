@@ -5,28 +5,33 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    ...
-  }: let
-    inherit (nixpkgs) lib;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      ...
+    }:
+    let
+      inherit (nixpkgs) lib;
 
-    systems = [
-      "aarch64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
-      "x86_64-linux"
-    ];
+      systems = [
+        "aarch64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ];
 
-    eachSystem = f:
-      lib.foldAttrs lib.mergeAttrs {}
-      (map (system: lib.mapAttrs (_: v: {${system} = v;}) (f system)) systems);
+      eachSystem =
+        f:
+        lib.foldAttrs lib.mergeAttrs { } (
+          map (system: lib.mapAttrs (_: v: { ${system} = v; }) (f system)) systems
+        );
 
-    nvimAppName = "nvim-${builtins.substring 7 (builtins.stringLength self.narHash) self.narHash}";
-  in
+      nvimAppName = "nvim-${builtins.substring 7 (builtins.stringLength self.narHash) self.narHash}";
+    in
     eachSystem (
-      system: let
+      system:
+      let
         pkgs = nixpkgs.legacyPackages.${system};
 
         inherit (pkgs) vimPlugins;
@@ -62,36 +67,36 @@
 
         lazyPathFile =
           pkgs.writeText "lazy-patches.lua"
-          /*
-          lua
-          */
-          ''
-            -- I have no idea why but adding it in LUA_CPATH is not enough...
-            package.preload["jsregexp.core"] = package.loadlib("${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/jsregexp/core.so", "luaopen_jsregexp_core");
+            # lua
+            ''
+              -- I have no idea why but adding it in LUA_CPATH is not enough...
+              package.preload["jsregexp.core"] = package.loadlib("${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/jsregexp/core.so", "luaopen_jsregexp_core");
 
-            local original_require = require
+              local original_require = require
 
-            require = function(module)
-              -- luasnip does some preloading shenanigans - this prevents it
-              if module == "luasnip.util.jsregexp" then
-                return original_require("jsregexp")
+              require = function(module)
+                -- luasnip does some preloading shenanigans - this prevents it
+                if module == "luasnip.util.jsregexp" then
+                  return original_require("jsregexp")
+                end
+                return original_require(module)
               end
-              return original_require(module)
-            end
-          '';
+            '';
 
         luaCPath = lib.concatStringsSep ";" [
           "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so"
         ];
 
-        nvimPlugins = import ./nix/plugins.nix {inherit pkgs plugins;};
+        nvimPlugins = import ./nix/plugins.nix { inherit pkgs plugins; };
 
-        luaPath = lib.concatStringsSep ";" ([
+        luaPath = lib.concatStringsSep ";" (
+          [
             "${vimPlugins.lazy-nvim}/lua/?.lua"
             "${vimPlugins.lazy-nvim}/lua/?/init.lua"
             "${pkgs.luajitPackages.jsregexp}/share/lua/5.1/?.lua"
           ]
-          ++ ["${lazyPathFile}"]);
+          ++ [ "${lazyPathFile}" ]
+        );
 
         neovim = pkgs.stdenv.mkDerivation {
           inherit (pkgs.neovim) version;
@@ -100,7 +105,7 @@
 
           dontUnpack = true;
 
-          nativeBuildInputs = [pkgs.makeWrapper];
+          nativeBuildInputs = [ pkgs.makeWrapper ];
 
           buildInputs = [
             pkgs.neovim
@@ -116,20 +121,23 @@
             cp -r ${./efm-langserver} $out/config/efm-langserver
 
             wrapProgram $out/bin/nvim \
-              --prefix PATH : ${lib.makeBinPath [
-              pkgs.ripgrep
-              pkgs.fd
-              pkgs.lua-language-server
-              pkgs.efm-langserver
-              pkgs.nil
-              pkgs.typescript-language-server
-              pkgs.yaml-language-server
-              pkgs.taplo
-              pkgs.rust-analyzer
-              pkgs.tailwindcss-language-server
-              # html / css /json / eslint
-              pkgs.vscode-langservers-extracted
-            ]} \
+              --prefix PATH : ${
+                lib.makeBinPath [
+                  pkgs.ripgrep
+                  pkgs.fd
+                  pkgs.lua-language-server
+                  pkgs.efm-langserver
+                  pkgs.nil
+                  pkgs.typescript-language-server
+                  pkgs.yaml-language-server
+                  pkgs.taplo
+                  pkgs.rust-analyzer
+                  pkgs.tailwindcss-language-server
+                  # html / css /json / eslint
+                  pkgs.vscode-langservers-extracted
+                  pkgs.nixfmt-rfc-style
+                ]
+              } \
               --set NVIM_APPNAME ${nvimAppName} \
               --set XDG_CONFIG_HOME $out/config \
               --set PLUGIN_PATH ${nvimPlugins} \
@@ -144,7 +152,8 @@
             platforms = lib.platforms.linux ++ lib.platforms.darwin;
           };
         };
-      in {
+      in
+      {
         packages.default = neovim;
 
         apps.default = {
@@ -153,12 +162,12 @@
         };
 
         devShells.default = pkgs.mkShell {
-          buildInputs =
-            [
-              self.packages.${system}.default
-            ]
-            ++ plugins;
+          buildInputs = [
+            self.packages.${system}.default
+          ] ++ plugins;
         };
+
+        formatter = pkgs.nixfmt-rfc-style;
       }
     );
 }
