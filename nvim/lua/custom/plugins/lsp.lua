@@ -149,6 +149,15 @@ return {
           },
         },
       },
+      nil_ls = {},
+      ts_ls = {},
+      yamlls = {},
+      taplo = {},
+      rust_analyzer = {},
+      html = {},
+      cssls = {},
+      jsonls = {},
+      eslint = {},
     }
 
     for server, settings in pairs(servers) do
