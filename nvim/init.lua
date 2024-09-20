@@ -3,36 +3,8 @@ require "custom.core.keymaps"
 
 local lazy = require "lazy"
 
-lazy.setup({
-  require "custom.plugins.telescope",
-  require "custom.plugins.oil",
-  require "custom.plugins.baleia",
-  require "custom.plugins.gitsigns",
-  require "custom.plugins.treesitter",
-  require "custom.plugins.colorscheme",
-  require "custom.plugins.completion",
-  require "custom.plugins.comment",
-  require "custom.plugins.lsp",
-  require "custom.plugins.autopairs",
-  require "custom.plugins.indent",
-  require "custom.plugins.lualine",
-  require "custom.plugins.colorizer",
-  require "custom.plugins.my-theme",
-  require "custom.plugins.lazydev",
-
-  -- TODO: dependencies should be handled by nix + lazy patch
-  { "plenary.nvim" },
-  { "telescope-fzf-native.nvim" },
-  { "nvim-web-devicons" },
-  { "cmp-path" },
-  { "cmp-buffer" },
-  { "luasnip" },
-  { "nvim-ts-context-commentstring" },
-  { "j-hui/fidget.nvim" },
-  { "hrsh7th/cmp-nvim-lsp" },
-  { "nvim-navic" },
-  { "lspkind-nvim" },
-}, {
+lazy.setup {
+  spec = { import = "custom.plugins" },
   root = os.getenv "PLUGIN_PATH",
   defaults = {
     lazy = true,
@@ -48,7 +20,7 @@ lazy.setup({
       reset = false,
     },
   },
-})
+}
 
 local autocmds = require "custom.core.autocmds"
 
