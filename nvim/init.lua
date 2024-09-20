@@ -33,6 +33,7 @@ lazy.setup({
   { "nvim-navic" },
   { "lspkind-nvim" },
 }, {
+  root = os.getenv "PLUGIN_PATH",
   defaults = {
     lazy = true,
   },

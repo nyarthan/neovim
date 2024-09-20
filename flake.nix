@@ -78,13 +78,13 @@
               end
               return original_require(module)
             end
-
-            local pluginPaths = {
-              ${lib.concatStringsSep ",\n" (map (plugin: ''["${plugin.pname}"] = "${plugin}"'') plugins)}
-            }
-
-            ${builtins.readFile ./lazy-patches.lua}
           '';
+
+        luaCPath = lib.concatStringsSep ";" [
+          "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so"
+        ];
+
+        nvimPlugins = import ./nix/plugins.nix {inherit pkgs plugins;};
 
         luaPath = lib.concatStringsSep ";" ([
             "${vimPlugins.lazy-nvim}/lua/?.lua"
@@ -92,10 +92,6 @@
             "${pkgs.luajitPackages.jsregexp}/share/lua/5.1/?.lua"
           ]
           ++ ["${lazyPathFile}"]);
-
-        luaCPath = lib.concatStringsSep ";" [
-          "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so"
-        ];
 
         neovim = pkgs.stdenv.mkDerivation {
           inherit (pkgs.neovim) version;
@@ -106,11 +102,10 @@
 
           nativeBuildInputs = [pkgs.makeWrapper];
 
-          buildInputs =
-            [
-              pkgs.neovim
-            ]
-            ++ plugins;
+          buildInputs = [
+            pkgs.neovim
+            nvimPlugins
+          ];
 
           installPhase = ''
             mkdir -p $out/bin
@@ -129,9 +124,9 @@
             ]} \
               --set NVIM_APPNAME ${nvimAppName} \
               --set XDG_CONFIG_HOME $out/config \
+              --set PLUGIN_PATH ${nvimPlugins} \
               --set LUA_PATH '${luaPath}' \
               --set LUA_CPATH '${luaCPath}' \
-              --add-flags "--cmd 'lua require([[lazy-patch]])'" \
           '';
 
           meta = {
