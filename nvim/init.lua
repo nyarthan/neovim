@@ -17,6 +17,7 @@ lazy.setup({
   require "custom.plugins.indent",
   require "custom.plugins.lualine",
   require "custom.plugins.colorizer",
+  require "custom.plugins.my-theme",
 
   -- TODO: dependencies should be handled by nix + lazy patch
   { "plenary.nvim" },
@@ -35,6 +36,9 @@ lazy.setup({
   },
   install = {
     missing = false,
+  },
+  dev = {
+    path = "~/dev/nvim-plugins",
   },
   performance = {
     rtp = {
