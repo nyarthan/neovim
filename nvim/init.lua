@@ -16,6 +16,7 @@ lazy.setup({
   require "custom.plugins.autopairs",
   require "custom.plugins.indent",
   require "custom.plugins.lualine",
+  require "custom.plugins.colorizer",
 
   -- TODO: dependencies should be handled by nix + lazy patch
   { "plenary.nvim" },
@@ -53,3 +54,4 @@ autocmds.GitCheck
     end,
   })
   :enable()
+

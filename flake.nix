@@ -55,6 +55,7 @@
           vimPlugins.guess-indent-nvim
           vimPlugins.lualine-nvim
           vimPlugins.nvim-navic
+          vimPlugins.nvim-highlight-colors
         ];
 
         lazyPathFile =
