@@ -17,6 +17,7 @@ M.nf = {
   oct_dot = "",
   oct_question = "",
   cod_root_folder = "",
+  cod_ellipsis = "",
 }
 
 M.emoji = {}

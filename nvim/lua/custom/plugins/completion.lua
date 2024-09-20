@@ -8,10 +8,13 @@ return {
       "luasnip",
       opts = {},
     },
+    "lspkind-nvim",
   },
   config = function()
+    local Symbols = require "custom.symbols"
     local cmp = require "cmp"
     local luasnip = require "luasnip"
+    local lspkind = require "lspkind"
 
     cmp.setup {
       snippet = {
@@ -31,8 +34,18 @@ return {
         ["<C-Space>"] = cmp.mapping.complete {},
       },
       sources = cmp.config.sources({
+        { name = "lazydev", group_index = 0 },
+        { name = "nvim_lsp" },
         { name = "path" },
       }, { { name = "buffer" } }),
+      formatting = {
+        format = lspkind.cmp_format {
+          mode = "symbol_text",
+          maxwidth = 50,
+          ellipsis_char = Symbols.nf.cod_ellipsis,
+          show_labelDetails = true,
+        },
+      },
     }
   end,
 }

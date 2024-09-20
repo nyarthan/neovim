@@ -18,6 +18,7 @@ lazy.setup({
   require "custom.plugins.lualine",
   require "custom.plugins.colorizer",
   require "custom.plugins.my-theme",
+  require "custom.plugins.lazydev",
 
   -- TODO: dependencies should be handled by nix + lazy patch
   { "plenary.nvim" },
@@ -30,6 +31,7 @@ lazy.setup({
   { "j-hui/fidget.nvim" },
   { "hrsh7th/cmp-nvim-lsp" },
   { "nvim-navic" },
+  { "lspkind-nvim" },
 }, {
   defaults = {
     lazy = true,
@@ -58,4 +60,3 @@ autocmds.GitCheck
     end,
   })
   :enable()
-
