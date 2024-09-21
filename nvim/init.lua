@@ -33,3 +33,10 @@ autocmds.GitCheck
     end,
   })
   :enable()
+
+-- TODO: efm + stylua inserts \n at EOF - styla cli does not
+-- possibly related:
+-- - https://github.com/mattn/efm-langserver/issues/241
+-- - https://github.com/mattn/efm-langserver/issues/181
+-- - https://github.com/neovim/neovim/issues/16842
+-- stylua: ingore
