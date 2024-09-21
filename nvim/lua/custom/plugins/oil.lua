@@ -1,6 +1,10 @@
 local Util = require "custom.util"
 local Color = require "custom.color"
 
+local function is_in_git_flake(path)
+  return Util.is_file_in_root(path, { root_markers = { "flake.nix", ".git/" }, match_type = "all" })
+end
+
 return {
   "stevearc/oil.nvim",
   opts = {
@@ -20,6 +24,13 @@ return {
 
         return false
       end,
+    },
+    git = {
+      add = function(path) return is_in_git_flake(path) end,
+      mv = function(src_path, des_path)
+        return is_in_git_flake(src_path) and is_in_git_flake(des_path)
+      end,
+      rm = function(path) return is_in_git_flake(path) end,
     },
   },
   dependencies = { "nvim-tree/nvim-web-devicons" },

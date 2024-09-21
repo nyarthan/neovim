@@ -123,4 +123,55 @@ end
 --- @return string # The current mode as a string (e.g., "n" for normal mode, "i" for insert mode).
 M.get_mode = function() return vim.api.nvim_get_mode().mode end
 
+-- Check if a file or directory exists
+M.file_exists = function(path) return vim.uv.fs_lstat(path) ~= nil end
+
+-- Check if the given directory contains any of the root markers
+M.has_root_marker = function(dir, root_markers)
+  for _, root_marker in ipairs(root_markers) do
+    if M.file_exists(dir .. "/" .. root_marker) then return true end
+  end
+  return false
+end
+
+-- Check if a directory contains the specified root markers based on match type ("any" or "all")
+M.match_root_markers = function(found_root_markers, total_root_markers, match_type)
+  if match_type == "all" then return #found_root_markers == #total_root_markers end
+  return #found_root_markers > 0 -- Default behavior is "any"
+end
+
+-- Traverse the directories upwards from the path and check for root markers
+M.has_root_marker_in_path = function(path, root_markers, match_type)
+  -- Resolve the real path, or use the provided path if it's not yet on disk
+  local real_path = vim.uv.fs_realpath(path)
+  local dir = real_path and vim.fs.dirname(real_path) or vim.fs.dirname(path)
+  dir = dir or path
+
+  -- Traverse upwards through the directories
+  while dir do
+    local found_markers = {}
+
+    -- Check if the current directory contains the root markers
+    for _, root_marker in ipairs(root_markers) do
+      if M.file_exists(dir .. "/" .. root_marker) then table.insert(found_markers, root_marker) end
+    end
+
+    -- Return true if the root markers satisfy the match condition
+    if M.match_root_markers(found_markers, root_markers, match_type) then return true end
+
+    -- Move up to the parent directory
+    local parent_dir = vim.uv.fs_realpath(vim.fs.dirname(dir))
+    if parent_dir == dir then break end
+    dir = parent_dir
+  end
+
+  return false
+end
+
+-- Entry function that checks if a file is in a directory with specified root markers
+M.is_file_in_root = function(path, opts)
+  local match_type = opts.match_type or "any" -- Default to "any"
+  return M.has_root_marker_in_path(path, opts.root_markers, match_type)
+end
+
 return M
