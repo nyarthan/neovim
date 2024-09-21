@@ -123,10 +123,19 @@ end
 --- @return string # The current mode as a string (e.g., "n" for normal mode, "i" for insert mode).
 M.get_mode = function() return vim.api.nvim_get_mode().mode end
 
--- Check if a file or directory exists
+--- Check if a file or directory exists.
+---
+--- @param path string The path to the file or directory.
+---
+--- @return boolean # Returns true if the file or directory exists, otherwise false.
 M.file_exists = function(path) return vim.uv.fs_lstat(path) ~= nil end
 
--- Check if the given directory contains any of the root markers
+--- Check if the given directory contains any of the root markers.
+---
+--- @param dir string The directory path to check.
+--- @param root_markers string[] List of root marker filenames to check for.
+---
+--- @return boolean # Returns true if any of the root markers are found in the directory.
 M.has_root_marker = function(dir, root_markers)
   for _, root_marker in ipairs(root_markers) do
     if M.file_exists(dir .. "/" .. root_marker) then return true end
@@ -134,32 +143,38 @@ M.has_root_marker = function(dir, root_markers)
   return false
 end
 
--- Check if a directory contains the specified root markers based on match type ("any" or "all")
+--- Check if the root markers match based on the match type.
+---
+--- @param found_root_markers string[] List of found root markers.
+--- @param total_root_markers string[] The total list of root markers to check against.
+--- @param match_type "all"|"any" The match type.
+---
+--- @return boolean # Returns true if the root markers match based on the match type.
 M.match_root_markers = function(found_root_markers, total_root_markers, match_type)
   if match_type == "all" then return #found_root_markers == #total_root_markers end
-  return #found_root_markers > 0 -- Default behavior is "any"
+  return #found_root_markers > 0
 end
 
--- Traverse the directories upwards from the path and check for root markers
+--- Traverse the directories upwards from the path and check for root markers.
+---
+--- @param path string The file or directory path to start searching from.
+--- @param root_markers string[] List of root markers to check for.
+--- @param match_type "all"|"any" The match type.
+---
+--- @return boolean # Returns true if the root markers are found based on the match type.
 M.has_root_marker_in_path = function(path, root_markers, match_type)
-  -- Resolve the real path, or use the provided path if it's not yet on disk
   local real_path = vim.uv.fs_realpath(path)
   local dir = real_path and vim.fs.dirname(real_path) or vim.fs.dirname(path)
   dir = dir or path
 
-  -- Traverse upwards through the directories
   while dir do
     local found_markers = {}
-
-    -- Check if the current directory contains the root markers
     for _, root_marker in ipairs(root_markers) do
       if M.file_exists(dir .. "/" .. root_marker) then table.insert(found_markers, root_marker) end
     end
 
-    -- Return true if the root markers satisfy the match condition
     if M.match_root_markers(found_markers, root_markers, match_type) then return true end
 
-    -- Move up to the parent directory
     local parent_dir = vim.uv.fs_realpath(vim.fs.dirname(dir))
     if parent_dir == dir then break end
     dir = parent_dir
@@ -168,9 +183,16 @@ M.has_root_marker_in_path = function(path, root_markers, match_type)
   return false
 end
 
--- Entry function that checks if a file is in a directory with specified root markers
+--- Entry function that checks if a file is in a directory with specified root markers.
+---
+--- @param path string The path to the file.
+--- @param opts {root_markers: string[], match_type: "all"|"any"} A table of options. Includes:
+---    - `root_markers`: List of root markers to check for.
+---    - `match_type`: The match type, either "all" or "any" (defaults to "any").
+---
+--- @return boolean # Returns true if the file is in a directory with the specified root markers.
 M.is_file_in_root = function(path, opts)
-  local match_type = opts.match_type or "any" -- Default to "any"
+  local match_type = opts.match_type or "any"
   return M.has_root_marker_in_path(path, opts.root_markers, match_type)
 end
 
