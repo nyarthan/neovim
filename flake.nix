@@ -63,6 +63,9 @@
           vimPlugins.nvim-highlight-colors
           vimPlugins.lazydev-nvim
           vimPlugins.lspkind-nvim
+          vimPlugins.noice-nvim
+          vimPlugins.nui-nvim
+          vimPlugins.nvim-notify
         ];
 
         lazyPathFile =
