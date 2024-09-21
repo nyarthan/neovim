@@ -2,7 +2,8 @@ local Util = require "custom.util"
 
 return {
   "neovim/nvim-lspconfig",
-  event = "BufEnter",
+  dev = true,
+  event = { "BufEnter" },
   dependencies = {
     {
       "j-hui/fidget.nvim",

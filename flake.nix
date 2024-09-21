@@ -143,6 +143,7 @@
               --set PLUGIN_PATH ${nvimPlugins} \
               --set LUA_PATH '${luaPath}' \
               --set LUA_CPATH '${luaCPath}' \
+              --add-flags "--cmd 'lua require([[lazy-patchs]])'" \
           '';
 
           meta = {
