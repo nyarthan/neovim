@@ -12,6 +12,7 @@ return {
   },
   config = function()
     local Symbols = require "custom.symbols"
+    local Util = require "custom.util"
     local cmp = require "cmp"
     local luasnip = require "luasnip"
     local lspkind = require "lspkind"
@@ -26,12 +27,15 @@ return {
         -- documentation = cmp.config.window.bordered(),
       },
       mapping = cmp.mapping.preset.insert {
-        ["<C-n>"] = cmp.mapping.select_next_item(),
-        ["<C-p>"] = cmp.mapping.select_prev_item(),
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-y>"] = cmp.mapping.confirm { select = true },
-        ["<C-Space>"] = cmp.mapping.complete {},
+        ["<C-n>"] = cmp.mapping(Util.bind_strict(cmp.select_next_item), { "i", "c", "s" }),
+        ["<C-p>"] = cmp.mapping(Util.bind_strict(cmp.select_prev_item), { "i", "c", "s" }),
+        ["<C-b>"] = cmp.mapping(Util.bind_strict(cmp.scroll_docs, -4), { "i", "c", "s" }),
+        ["<C-f>"] = cmp.mapping(Util.bind_strict(cmp.scroll_docs, 4), { "i", "c", "s" }),
+        ["<C-y>"] = cmp.mapping(
+          Util.bind_strict(cmp.confirm, { select = true }),
+          { "i", "c", "s" }
+        ),
+        ["<C-Space>"] = cmp.mapping(Util.bind_strict(cmp.complete), { "i", "c", "s" }),
       },
       sources = cmp.config.sources({
         { name = "lazydev", group_index = 0 },

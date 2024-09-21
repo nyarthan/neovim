@@ -19,6 +19,24 @@ M.bind = function(fn, ...)
   end
 end
 
+--- Bind arguments to a function, returning a new function with the same number of arguments.
+--- This function ensures that only the bound arguments will be passed to the function,
+--- discarding any additional arguments passed when the new function is invoked.
+---
+--- @param fn function The function to bind arguments to.
+--- @param ... any Initial arguments to bind to the function.
+---
+--- @return function # A new function with fixed arguments.
+M.bind_strict = function(fn, ...)
+  local bound_args = { ... }
+  local bound_count = select("#", ...) -- Count of bound arguments
+  return function()
+    local call_args = { unpack(bound_args) }
+    -- Only pass exactly the bound arguments, ignoring any others
+    return fn(unpack(call_args, 1, bound_count))
+  end
+end
+
 --- @generic T
 --- @param list T[] List of items to be deduplicated
 --- @return T[] A new list with duplicate items removed
