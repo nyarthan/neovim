@@ -52,3 +52,4 @@ opt.inccommand = "split"
 opt.cursorline = true
 opt.scrolloff = 10
 opt.hlsearch = true
+opt.cmdheight = 0

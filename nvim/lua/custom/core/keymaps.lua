@@ -9,7 +9,7 @@ nmap("<Esc>", make_cmd "nohlsearch", { desc = "Stop highlighting current search"
 nmap("<Left>", bind(print, "Use h to move left"), { desc = [[Arrow navigation is "disabled"]] })
 nmap("<Right>", bind(print, "Use l to move right"), { desc = [[Arrow navigation is "disabled"]] })
 nmap("<Up>", bind(print, "Use k to move up"), { desc = [[Arrow navigation is "disabled"]] })
-nmap("<Down>", bind(print, "Use j to move!"), { desc = [[Arrow navigation is "disabled"]] })
+nmap("<Down>", bind(print, "Use j to move"), { desc = [[Arrow navigation is "disabled"]] })
 
 nmap("<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 nmap("<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
