@@ -36,7 +36,7 @@ return {
           signs = {
             text = diagnostic_signs,
           },
-          underline = {severity = {vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN}},
+          underline = { severity = { vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN } },
           virtual_text = {
             source = false, -- handled by format
             prefix = function(diagnostic, i, total)

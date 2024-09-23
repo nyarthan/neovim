@@ -36,11 +36,26 @@ return {
           left = Symbols.unicode.light_quadruple_dash_vertical,
           right = Symbols.unicode.light_quadruple_dash_vertical,
         },
+        disabled_filetypes = { "trouble" },
       },
       sections = {
         lualine_a = { "mode" },
         lualine_b = { "branch", "diff", "diagnostics" },
-        lualine_c = { "filename" },
+        lualine_c = {
+          {
+            require "custom.plugins.lualine.components.filename",
+            newfile_status = true,
+            path = 4,
+            symbols = {
+              modified = Symbols.nf.oct_pencil,
+              readonly = Symbols.nf.oct_lock,
+              unnamed = Symbols.nf.oct_question,
+              newfile = Symbols.nf.oct_file_added,
+              none = Symbols.nf.oct_check_circle,
+            },
+            ignore_filetypes = { TelescopePrompt = {} },
+          },
+        },
         lualine_x = {
           {
             require("noice").api.status.command.get,

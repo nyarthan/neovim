@@ -16,13 +16,17 @@ M.nf = {
   oct_file_diff = "",
   oct_dot = "",
   oct_question = "",
+  oct_check_circle = "",
+  oct_lock = "",
+  oct_file_added = "",
+  oct_pencil = "",
   cod_root_folder = "",
   cod_ellipsis = "",
   cod_error = "",
   cod_warning = "",
   cod_question = "",
   cod_info = "",
-  cod_lightbulb = ""
+  cod_lightbulb = "",
 }
 
 M.emoji = {}
