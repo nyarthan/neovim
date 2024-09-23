@@ -14,19 +14,29 @@ return {
   "telescope.nvim",
   dependencies = { "plenary.nvim", "telescope-fzf-native.nvim" },
   cmd = "Telescope",
-  opts = {
-    defaults = {
-      mappings = {
-        n = {
-          ["<C-b>"] = function(prompt_bufnr)
-            local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-            vim.g.baleia.once(picker.results_bufnr)
-          end,
+  opts = function()
+    return {
+      defaults = {
+        mappings = {
+          n = {
+            ["<C-b>"] = function(prompt_bufnr)
+              print(prompt_bufnr)
+              local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
+              vim.g.baleia.once(picker.results_bufnr)
+            end,
+            ["<C-t>"] = function(bufnr)
+              print(bufnr)
+              require("trouble.sources.telescope").open(bufnr)
+            end,
+          },
+          i = {
+            ["<C-t>"] = require("trouble.sources.telescope").open,
+          },
         },
       },
-    },
-  },
-  config = function(opts)
+    }
+  end,
+  config = function(_, opts)
     local telescope = require "telescope"
     telescope.setup(opts)
     telescope.load_extension "fzf"

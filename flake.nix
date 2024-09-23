@@ -6,11 +6,7 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      ...
-    }:
+    { self, nixpkgs, ... }:
     let
       inherit (nixpkgs) lib;
 
@@ -66,6 +62,7 @@
           vimPlugins.noice-nvim
           vimPlugins.nui-nvim
           vimPlugins.nvim-notify
+          vimPlugins.trouble-nvim
         ];
 
         lazyPathFile =
@@ -86,9 +83,7 @@
               end
             '';
 
-        luaCPath = lib.concatStringsSep ";" [
-          "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so"
-        ];
+        luaCPath = lib.concatStringsSep ";" [ "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so" ];
 
         nvimPlugins = import ./nix/plugins.nix { inherit pkgs plugins; };
 
@@ -165,11 +160,7 @@
           program = "${self.packages.${system}.default}/bin/nvim";
         };
 
-        devShells.default = pkgs.mkShell {
-          buildInputs = [
-            self.packages.${system}.default
-          ] ++ plugins;
-        };
+        devShells.default = pkgs.mkShell { buildInputs = [ self.packages.${system}.default ] ++ plugins; };
 
         formatter = pkgs.nixfmt-rfc-style;
       }
