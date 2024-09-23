@@ -214,4 +214,6 @@ M.is_file_in_root = function(path, opts)
   return M.has_root_marker_in_path(path, opts.root_markers, match_type)
 end
 
+M.str_rm_trailing = function(str, sub) return string.gsub(str, "%" .. sub .. "$", "") end
+
 return M

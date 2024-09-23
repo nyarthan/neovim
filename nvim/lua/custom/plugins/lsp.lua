@@ -1,4 +1,5 @@
 local Util = require "custom.util"
+local Symbols = require "custom.symbols"
 
 return {
   "neovim/nvim-lspconfig",
@@ -24,6 +25,32 @@ return {
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("LspAttach", { clear = true }),
       callback = function(event)
+        local diagnostic_signs = {
+          [vim.diagnostic.severity.ERROR] = Symbols.nf.cod_error,
+          [vim.diagnostic.severity.WARN] = Symbols.nf.cod_warning,
+          [vim.diagnostic.severity.HINT] = Symbols.nf.cod_lightbulb,
+          [vim.diagnostic.severity.INFO] = Symbols.nf.cod_info,
+        }
+        vim.diagnostic.config {
+          severity_sort = true,
+          signs = {
+            text = diagnostic_signs,
+          },
+          underline = {severity = {vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN}},
+          virtual_text = {
+            source = false, -- handled by format
+            prefix = function(diagnostic, i, total)
+              if i ~= total then return "" end
+              return diagnostic_signs[diagnostic.severity] .. " "
+            end,
+            format = function(diagnostic)
+              return vim.trim(Util.str_rm_trailing(diagnostic.message, "."))
+                .. " | "
+                .. vim.trim(Util.str_rm_trailing(diagnostic.source, "."))
+            end,
+          },
+        }
+
         local t_builtin = require "telescope.builtin"
 
         local map = Util.make_map { mode = "n", buffer = event.buf }

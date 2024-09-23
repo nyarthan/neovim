@@ -18,6 +18,11 @@ M.nf = {
   oct_question = "",
   cod_root_folder = "",
   cod_ellipsis = "",
+  cod_error = "",
+  cod_warning = "",
+  cod_question = "",
+  cod_info = "",
+  cod_lightbulb = ""
 }
 
 M.emoji = {}
