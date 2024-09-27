@@ -1,6 +1,6 @@
 return {
-  "polarmutex/git-worktree.nvim",
-  lazy = false,
+  "worktree.nvim",
   dev = true,
   dependencies = { "vim-lua/plenary.nvim" },
+  opts = {},
 }
