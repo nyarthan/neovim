@@ -63,6 +63,7 @@
           vimPlugins.nui-nvim
           vimPlugins.nvim-notify
           vimPlugins.trouble-nvim
+          vimPlugins.render-markdown-nvim
         ];
 
         lazyPathFile =

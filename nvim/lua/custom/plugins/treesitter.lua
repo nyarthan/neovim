@@ -1,6 +1,7 @@
 return {
   "nvim-treesitter",
   event = "BufEnter",
+  main = "nvim-treesitter.configs",
   opts = {
     auto_install = false,
 
