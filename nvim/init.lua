@@ -40,3 +40,17 @@ autocmds.GitCheck
 -- - https://github.com/mattn/efm-langserver/issues/181
 -- - https://github.com/neovim/neovim/issues/16842
 -- stylua: ingore
+
+local client = vim.lsp.start {
+  name = "anyls",
+  cmd = { "/Users/jannis/dev/anyls/target/debug/anyls" },
+}
+
+if not client then
+  vim.notify_once("anyls not started", vim.log.levels.INFO)
+else
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "markdown",
+    callback = function() vim.lsp.buf_attach_client(0, client) end,
+  })
+end

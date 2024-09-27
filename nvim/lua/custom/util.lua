@@ -216,4 +216,120 @@ end
 
 M.str_rm_trailing = function(str, sub) return string.gsub(str, "%" .. sub .. "$", "") end
 
+--- @param node? TSNode
+M.get_ast_path = function(node)
+  local path = {}
+
+  while node do
+    local node_type = node:type()
+
+    local sibling_index = 0
+    local parent = node:parent()
+    if parent then
+      for i = 0, parent:named_child_count() - 1 do
+        if parent:named_child(i) == node then
+          sibling_index = i
+          break
+        end
+      end
+    end
+
+    table.insert(path, { type = node_type, sibling_index = sibling_index })
+
+    node = parent
+  end
+
+  return vim.fn.reverse(path)
+end
+
+--- @param root TSNode
+--- @param path table
+M.find_node_by_path = function(root, path)
+  local node = root
+
+  for i = 2, #path do
+    local entry = path[i]
+    local found = false
+
+    for j = 0, node:named_child_count() - 1 do
+      local child = node:named_child(j) --- @cast child TSNode
+      if child:type() == entry.type and j == entry.sibling_index then
+        node = child
+        found = true
+        break
+      end
+    end
+
+    if not found then return nil end
+  end
+
+  return node
+end
+
+--- @param bufnr integer
+--- @param target_row integer
+M.find_first_node_on_line = function(bufnr, target_row)
+  local line_text = vim.api.nvim_buf_get_lines(bufnr, target_row, target_row + 1, false)[1]
+
+  if not line_text or line_text:match "^%s*$" then return nil end
+
+  local first_non_whitespace_col = line_text:find "%S" - 1
+
+  return vim.treesitter.get_node { bufnr = bufnr, pos = { target_row, first_non_whitespace_col } }
+end
+
+--- @param bufnr integer
+--- @param target_row integer
+M.find_last_node_on_line = function(bufnr, target_row)
+  local line_text = vim.api.nvim_buf_get_lines(bufnr, target_row, target_row + 1, false)[1]
+
+  if not line_text or line_text:match "^%s*$" then return nil end
+
+  local last_non_whitespace_col = line_text:find "%S%s*$" - 1
+
+  return vim.treesitter.get_node { bufnr = bufnr, pos = { target_row, last_non_whitespace_col } }
+end
+
+--- @param root TSNode
+--- @param target_row integer
+--- @param target_col integer
+M.find_closest_node = function(root, target_row, target_col)
+  local closest_node = nil
+  local min_distance = math.huge
+
+  for child, _ in root:iter_children() do
+    local start_row, start_col = child:start()
+    local distance = math.abs(target_row - start_row) + math.abs(target_col - start_col)
+
+    if distance < min_distance then
+      min_distance = distance
+      closest_node = child
+    end
+  end
+
+  return closest_node
+end
+
+--- @param line string
+--- @param cursor_col integer
+M.find_nearest_characters = function(line, cursor_col)
+  local left_char_pos, right_char_pos = nil, nil
+
+  for i = cursor_col, 1, -1 do
+    if not line:sub(i, i):match "%s" then
+      left_char_pos = i
+      break
+    end
+  end
+
+  for i = cursor_col + 1, #line do
+    if not line:sub(i, i):match "%s" then
+      right_char_pos = i
+      break
+    end
+  end
+
+  return left_char_pos, right_char_pos
+end
+
 return M

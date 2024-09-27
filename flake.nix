@@ -84,7 +84,10 @@
               end
             '';
 
-        luaCPath = lib.concatStringsSep ";" [ "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so" ];
+        luaCPath = lib.concatStringsSep ";" [
+          "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so"
+          "/Users/jannis/dev/nvim-plugins/anyfmt/lua/anyfmt/?.dylib"
+        ];
 
         nvimPlugins = import ./nix/plugins.nix { inherit pkgs plugins; };
 
@@ -94,7 +97,7 @@
             "${vimPlugins.lazy-nvim}/lua/?/init.lua"
             "${pkgs.luajitPackages.jsregexp}/share/lua/5.1/?.lua"
           ]
-          ++ [ "${lazyPathFile}" ]
+          # ++ [ "${lazyPathFile}" ]
         );
 
         neovim = pkgs.stdenv.mkDerivation {
@@ -142,7 +145,7 @@
               --set PLUGIN_PATH ${nvimPlugins} \
               --set LUA_PATH '${luaPath}' \
               --set LUA_CPATH '${luaCPath}' \
-              --add-flags "--cmd 'lua require([[lazy-patchs]])'" \
+              # --add-flags "--cmd 'lua require([[lazy-patchs]])'" \
           '';
 
           meta = {
