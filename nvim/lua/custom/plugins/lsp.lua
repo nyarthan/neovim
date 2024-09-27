@@ -65,6 +65,7 @@ return {
         map("<Leader>gws", t_builtin.lsp_dynamic_workspace_symbols)
         map("<Leader>rn", vim.lsp.buf.rename)
         map("<Leader>ca", vim.lsp.buf.code_action, { mode = { "x" } })
+        map("<Leader>d", vim.diagnostic.open_float)
 
         local client = vim.lsp.get_client_by_id(event.data.client_id)
 
@@ -102,7 +103,8 @@ return {
             callback = function() vim.lsp.buf.format { async = true } end,
           })
 
-          vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_formatting] = function(
+          -- TODO: this is for future me
+          --[[ vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_formatting] = function(
             err,
             result,
             ctx
@@ -130,8 +132,6 @@ return {
             local should_preserve_offset = false
             --- @type TSNode?
             local node
-
-            vim.print(result)
 
             -- cursor is on top of capture
             if has_current_capture then
@@ -161,8 +161,6 @@ return {
                   break
                 end
               end
-
-              vim.print(left_char_pos, right_char_pos)
 
               -- If both left and right characters are found, choose the nearest
               if left_char_pos and right_char_pos then
@@ -244,61 +242,7 @@ return {
 
             -- Step 9: Restore the view (including the updated cursor position)
             vim.fn.winrestview(view)
-          end
-
-          -- vim.lsp.handlers[vim.lsp.protocol.Methods.textDocument_formatting] = function(
-          --   err,
-          --   result,
-          --   context
-          -- )
-          --   if err ~= nil or result == nil then return end
-          --
-          --   if not vim.api.nvim_get_option_value("modified", { buf = context.bufnr }) then
-          --     local view = vim.fn.winsaveview()
-          --
-          --     local scratch_buf = vim.api.nvim_create_buf(false, true)
-          --
-          --     local original_lines = vim.api.nvim_buf_get_lines(context.bufnr, 0, -1, false)
-          --     vim.api.nvim_buf_set_lines(scratch_buf, 0, -1, false, original_lines)
-          --     vim.lsp.util.apply_text_edits(result, scratch_buf, "utf-8")
-          --
-          --     print "should have scratch_buf"
-          --
-          --     local updated_liens = vim.api.nvim_buf_get_lines(scratch_buf, 0, -1, false)
-          --
-          --     local function document_sync()
-          --       local text_document = vim.lsp.util.make_text_document_params(context.bufnr)
-          --       vim.lsp.buf_notify(context.bufnr, vim.lsp.protocol.Methods.textDocument_didChange, {
-          --         textDocument = text_document,
-          --         contentChanges = {
-          --           text = table.concat(updated_liens, "\n"),
-          --         },
-          --       })
-          --
-          --       vim.lsp.buf_request(
-          --         context.bufnr,
-          --         vim.lsp.protocol.Methods.textDocument_semanticTokens_full,
-          --         {},
-          --         function(_, tokens_result)
-          --           vim.print(tokens_result)
-          --           -- if not tokens_result then return end
-          --
-          --           print "applying text edits - we do have tokens"
-          --           vim.lsp.util.apply_text_edits(result, context.bufnr, "utf-8")
-          --           vim.fn.winrestview(view)
-          --
-          --           if context.bufnr == vim.api.nvim_get_current_buf() then
-          --             vim.api.nvim_command "noa :update"
-          --           end
-          --         end
-          --       )
-          --     end
-          --
-          --     document_sync()
-          --
-          --     vim.api.nvim_buf_delete(scratch_buf, { force = true })
-          --   end
-          -- end
+          end ]]
         end
 
         vim.api.nvim_create_autocmd("LspDetach", {
