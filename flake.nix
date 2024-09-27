@@ -39,7 +39,7 @@
           vimPlugins.nvim-treesitter.withAllGrammars
           vimPlugins.plenary-nvim
           vimPlugins.oil-nvim
-          vimPlugins.nvim-web-devicons
+          vimPlugins.mini-icons
           vimPlugins.baleia-nvim
           vimPlugins.gitsigns-nvim
           vimPlugins.catppuccin-nvim

@@ -24,7 +24,7 @@ return {
   "lualine.nvim",
   lazy = false,
   dependencies = {
-    "nvim-tree/nvim-web-devicons",
+    "echasnovski/mini.icons",
     { "nvim-navic", lazy = false, opts = { highlight = true } },
   },
   opts = function()

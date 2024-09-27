@@ -33,7 +33,7 @@ return {
       rm = function(path) return is_in_git_flake(path) end,
     },
   },
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = { "echasnovski/mini.icons" },
   keys = {
     {
       "-",
