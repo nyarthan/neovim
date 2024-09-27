@@ -64,6 +64,7 @@
           vimPlugins.nvim-notify
           vimPlugins.trouble-nvim
           vimPlugins.render-markdown-nvim
+          vimPlugins.telescope-ui-select-nvim
         ];
 
         lazyPathFile =
@@ -91,13 +92,12 @@
 
         nvimPlugins = import ./nix/plugins.nix { inherit pkgs plugins; };
 
-        luaPath = lib.concatStringsSep ";" (
-          [
-            "${vimPlugins.lazy-nvim}/lua/?.lua"
-            "${vimPlugins.lazy-nvim}/lua/?/init.lua"
-            "${pkgs.luajitPackages.jsregexp}/share/lua/5.1/?.lua"
-          ]
-          # ++ [ "${lazyPathFile}" ]
+        luaPath = lib.concatStringsSep ";" ([
+          "${vimPlugins.lazy-nvim}/lua/?.lua"
+          "${vimPlugins.lazy-nvim}/lua/?/init.lua"
+          "${pkgs.luajitPackages.jsregexp}/share/lua/5.1/?.lua"
+        ]
+        # ++ [ "${lazyPathFile}" ]
         );
 
         neovim = pkgs.stdenv.mkDerivation {

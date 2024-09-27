@@ -12,7 +12,7 @@ end
 
 return {
   "telescope.nvim",
-  dependencies = { "plenary.nvim", "telescope-fzf-native.nvim" },
+  dependencies = { "plenary.nvim", "telescope-fzf-native.nvim", "telescope-ui-select.nvim" },
   cmd = "Telescope",
   opts = function()
     return {
@@ -40,6 +40,7 @@ return {
     local telescope = require "telescope"
     telescope.setup(opts)
     telescope.load_extension "fzf"
+    telescope.load_extension "ui-select"
   end,
   keys = {
     {
