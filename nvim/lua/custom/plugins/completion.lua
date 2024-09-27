@@ -8,7 +8,7 @@ return {
       "luasnip",
       opts = {},
     },
-    "lspkind-nvim",
+    "lspkind.nvim",
   },
   config = function()
     local Symbols = require "custom.symbols"
