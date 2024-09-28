@@ -55,7 +55,6 @@
           vimPlugins.guess-indent-nvim
           vimPlugins.lualine-nvim
           vimPlugins.nvim-navic
-          vimPlugins.nvim-highlight-colors
           vimPlugins.lazydev-nvim
           vimPlugins.lspkind-nvim
           vimPlugins.noice-nvim
@@ -67,6 +66,7 @@
           vimPlugins.mini-pairs
           vimPlugins.mini-move
           vimPlugins.mini-indentscope
+          vimPlugins.mini-hipatterns
         ];
 
         lazyPathFile =
