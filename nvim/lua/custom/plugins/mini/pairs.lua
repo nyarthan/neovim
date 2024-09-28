@@ -1,5 +1,15 @@
 return {
   "echasnovski/mini.pairs",
-  event = "BufEnter",
   config = true,
+  keys = {
+    { "(", mode = "i" },
+    { "[", mode = "i" },
+    { "{", mode = "i" },
+    { ")", mode = "i" },
+    { "]", mode = "i" },
+    { "}", mode = "i" },
+    { "'", mode = "i" },
+    { "`", mode = "i" },
+    { [[""]], mode = "i" },
+  },
 }
