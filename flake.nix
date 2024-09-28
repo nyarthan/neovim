@@ -65,6 +65,7 @@
           vimPlugins.render-markdown-nvim
           vimPlugins.telescope-ui-select-nvim
           vimPlugins.mini-pairs
+          vimPlugins.mini-move
         ];
 
         lazyPathFile =

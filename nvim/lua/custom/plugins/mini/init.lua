@@ -1,3 +1,3 @@
 return {
-	import = "custom.plugins.mini"
+  import = "custom.plugins.mini",
 }
