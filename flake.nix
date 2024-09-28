@@ -66,6 +66,7 @@
           vimPlugins.telescope-ui-select-nvim
           vimPlugins.mini-pairs
           vimPlugins.mini-move
+          vimPlugins.mini-indentscope
         ];
 
         lazyPathFile =
