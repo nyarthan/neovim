@@ -52,7 +52,6 @@
           vimPlugins.nvim-lspconfig
           vimPlugins.fidget-nvim
           vimPlugins.cmp-nvim-lsp
-          vimPlugins.nvim-autopairs
           vimPlugins.guess-indent-nvim
           vimPlugins.lualine-nvim
           vimPlugins.nvim-navic
@@ -65,6 +64,7 @@
           vimPlugins.trouble-nvim
           vimPlugins.render-markdown-nvim
           vimPlugins.telescope-ui-select-nvim
+          vimPlugins.mini-pairs
         ];
 
         lazyPathFile =
