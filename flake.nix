@@ -67,6 +67,7 @@
           vimPlugins.mini-move
           vimPlugins.mini-indentscope
           vimPlugins.mini-hipatterns
+          vimPlugins.mini-surround
         ];
 
         lazyPathFile =
