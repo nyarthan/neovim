@@ -72,27 +72,6 @@
             vimPlugins.mini-surround
           ];
 
-          treesitterGrammars = pkgs.symlinkJoin {
-            name = "treesitter-dependencies";
-            paths = vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
-          };
-
-          neovimPlugins = pkgs.stdenv.mkDerivation {
-            inherit (pkgs.neovim) version;
-            pname = "neovim-plugins";
-            dontUnpack = true;
-            buildInputs = plugins;
-
-            # Why symlink plugin contents instead of dir itself?
-            # lazy.nvim does not resolve symlinks without setting dev = true
-            # because it really wants to manage plugins itself
-            # @see https://github.com/folke/lazy.nvim/issues/1063#issuecomment-1742003114
-            installPhase = lib.concatMapStringsSep "\n" (plugin: ''
-              mkdir -p $out/${plugin.pname}
-              ln -s ${plugin}/* $out/${plugin.pname}/
-            '') plugins;
-          };
-
           extraDependencies = [
             pkgs.ripgrep
             pkgs.fd
@@ -108,6 +87,9 @@
             pkgs.nixfmt-rfc-style
           ];
 
+          treesitterGrammars = import ./nix/packages/treesitter-grammars.nix { inherit pkgs; };
+          neovimPlugins = import ./nix/packages/neovim-plugins.nix { inherit pkgs plugins; };
+
           luaCPath = lib.concatStringsSep ";" [
             "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so"
             "/Users/jannis/dev/nvim-plugins/anyfmt/lua/anyfmt/?.dylib"
@@ -119,48 +101,19 @@
             "${pkgs.luajitPackages.jsregexp}/share/lua/5.1/?.lua"
           ]);
 
-          neovim = pkgs.stdenv.mkDerivation {
-            inherit (pkgs.neovim) version;
-
-            pname = "neovim";
-
-            dontUnpack = true;
-
-            nativeBuildInputs = [ pkgs.makeWrapper ];
-
-            buildInputs = [
-              pkgs.neovim
+          neovim = import ./nix/packages/neovim.nix {
+            inherit
+              pkgs
+              nvimAppName
               neovimPlugins
-            ];
-
-            installPhase = ''
-              mkdir -p $out/bin
-              mkdir -p $out/config/${nvimAppName}/nvim
-
-              cp ${pkgs.neovim}/bin/nvim $out/bin/nvim
-              cp -r ${./nvim}/* $out/config/${nvimAppName}/
-              cp -r ${./efm-langserver} $out/config/efm-langserver
-
-              wrapProgram $out/bin/nvim \
-                --prefix PATH : ${lib.makeBinPath extraDependencies} \
-                --set NVIM_APPNAME ${nvimAppName} \
-                --set XDG_CONFIG_HOME $out/config \
-                --set LUA_PATH '${luaPath}' \
-                --set LUA_CPATH '${luaCPath}' \
-                --set NVIM_NIX_PLUGIN_PATH ${neovimPlugins} \
-                --set NVIM_NIX_RTP '${treesitterGrammars}'
-            '';
-
-            meta = {
-              description = "Jannis' Neovim config";
-              homepage = "https://github.com/nyarthan/neovim";
-              license = lib.licenses.asl20;
-              platforms = lib.platforms.linux ++ lib.platforms.darwin;
-            };
+              luaPath
+              luaCPath
+              extraDependencies
+              treesitterGrammars
+              ;
           };
         in
         {
-
           packages.default = neovim;
 
           apps.default = {
@@ -168,24 +121,16 @@
             program = "${self'.packages.default}/bin/nvim";
           };
 
-          devShells.default = pkgs.mkShell {
-            packages = [ pkgs.neovim ] ++ extraDependencies;
-            shellHook = ''
-              temp_config_dir=$(mktemp -d)
-
-              ln -sf /Users/jannis/.config/neovim/nvim $temp_config_dir/nvim
-
-              export NVIM_NIX_PLUGIN_PATH='${neovimPlugins}'
-              export NVIM_NIX_RTP='${treesitterGrammars}'
-
-              export LUA_PATH='${luaPath}'
-              export LUA_CPATH='${luaCPath}'
-              export XDG_CONFIG_HOME=$temp_config_dir
-
-              echo "Starting neovim linked to config $temp_config_dir"
-
-              nvim
-            '';
+          devShells.default = import ./nix/shells/dev.nix {
+            inherit
+              pkgs
+              nvimAppName
+              neovimPlugins
+              luaPath
+              luaCPath
+              extraDependencies
+              treesitterGrammars
+              ;
           };
 
           formatter = pkgs.nixfmt-rfc-style;
