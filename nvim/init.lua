@@ -1,3 +1,4 @@
+require "custom.core.startup"
 require "custom.core.options"
 require "custom.core.keymaps"
 

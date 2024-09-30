@@ -32,6 +32,11 @@
 
         inherit (pkgs) vimPlugins;
 
+        treesitterDependencies = pkgs.symlinkJoin {
+          name = "treesitter-dependencies";
+          paths = vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
+        };
+
         plugins = [
           vimPlugins.lazy-nvim
           vimPlugins.telescope-nvim
@@ -68,6 +73,22 @@
           vimPlugins.mini-indentscope
           vimPlugins.mini-hipatterns
           vimPlugins.mini-surround
+        ];
+
+        tools = [
+          pkgs.ripgrep
+          pkgs.fd
+          pkgs.lua-language-server
+          pkgs.efm-langserver
+          pkgs.nil
+          pkgs.typescript-language-server
+          pkgs.yaml-language-server
+          pkgs.taplo
+          pkgs.rust-analyzer
+          pkgs.tailwindcss-language-server
+          # html / css /json / eslint
+          pkgs.vscode-langservers-extracted
+          pkgs.nixfmt-rfc-style
         ];
 
         lazyPathFile =
@@ -126,28 +147,13 @@
             cp -r ${./efm-langserver} $out/config/efm-langserver
 
             wrapProgram $out/bin/nvim \
-              --prefix PATH : ${
-                lib.makeBinPath [
-                  pkgs.ripgrep
-                  pkgs.fd
-                  pkgs.lua-language-server
-                  pkgs.efm-langserver
-                  pkgs.nil
-                  pkgs.typescript-language-server
-                  pkgs.yaml-language-server
-                  pkgs.taplo
-                  pkgs.rust-analyzer
-                  pkgs.tailwindcss-language-server
-                  # html / css /json / eslint
-                  pkgs.vscode-langservers-extracted
-                  pkgs.nixfmt-rfc-style
-                ]
-              } \
+              --prefix PATH : ${lib.makeBinPath tools} \
               --set NVIM_APPNAME ${nvimAppName} \
               --set XDG_CONFIG_HOME $out/config \
               --set PLUGIN_PATH ${nvimPlugins} \
               --set LUA_PATH '${luaPath}' \
               --set LUA_CPATH '${luaCPath}' \
+              --set NVIM_NIX_RTP '${treesitterDependencies}' \
               # --add-flags "--cmd 'lua require([[lazy-patchs]])'" \
           '';
 
@@ -167,7 +173,24 @@
           program = "${self.packages.${system}.default}/bin/nvim";
         };
 
-        devShells.default = pkgs.mkShell { buildInputs = [ self.packages.${system}.default ] ++ plugins; };
+        devShells.default = pkgs.mkShell {
+          packages = [ pkgs.neovim ] ++ tools;
+          shellHook = ''
+            temp_config_dir=$(mktemp -d)
+
+            ln -sf /Users/jannis/.config/neovim/nvim $temp_config_dir/nvim
+
+            export LUA_PATH='${luaPath}'
+            export LUA_CPATH='${luaCPath}'
+            export PLUGIN_PATH='${nvimPlugins}'
+            export NVIM_NIX_RTP='${treesitterDependencies}'
+            export XDG_CONFIG_HOME=$temp_config_dir
+
+            echo "Starting neovim linked to config $temp_config_dir"
+
+            # nvim
+          '';
+        };
 
         formatter = pkgs.nixfmt-rfc-style;
       }
