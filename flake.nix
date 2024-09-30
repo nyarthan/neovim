@@ -32,11 +32,6 @@
 
         inherit (pkgs) vimPlugins;
 
-        treesitterDependencies = pkgs.symlinkJoin {
-          name = "treesitter-dependencies";
-          paths = vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
-        };
-
         plugins = [
           vimPlugins.lazy-nvim
           vimPlugins.telescope-nvim
@@ -75,7 +70,28 @@
           vimPlugins.mini-surround
         ];
 
-        tools = [
+        treesitterGrammars = pkgs.symlinkJoin {
+          name = "treesitter-dependencies";
+          paths = vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
+        };
+
+        neovimPlugins = pkgs.stdenv.mkDerivation {
+          inherit (pkgs.neovim) version;
+          pname = "neovim-plugins";
+          dontUnpack = true;
+          buildInputs = plugins;
+
+          # Why symlink plugin contents instead of dir itself?
+          # lazy.nvim does not resolve symlinks without setting dev = true
+          # because it really wants to manage plugins itself
+          # @see https://github.com/folke/lazy.nvim/issues/1063#issuecomment-1742003114
+          installPhase = lib.concatMapStringsSep "\n" (plugin: ''
+            mkdir -p $out/${plugin.pname}
+            ln -s ${plugin}/* $out/${plugin.pname}/
+          '') plugins;
+        };
+
+        extraDependencies = [
           pkgs.ripgrep
           pkgs.fd
           pkgs.lua-language-server
@@ -86,43 +102,20 @@
           pkgs.taplo
           pkgs.rust-analyzer
           pkgs.tailwindcss-language-server
-          # html / css /json / eslint
-          pkgs.vscode-langservers-extracted
+          pkgs.vscode-langservers-extracted # html / css /json / eslint
           pkgs.nixfmt-rfc-style
         ];
-
-        lazyPathFile =
-          pkgs.writeText "lazy-patches.lua"
-            # lua
-            ''
-              -- I have no idea why but adding it in LUA_CPATH is not enough...
-              package.preload["jsregexp.core"] = package.loadlib("${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/jsregexp/core.so", "luaopen_jsregexp_core");
-
-              local original_require = require
-
-              require = function(module)
-                -- luasnip does some preloading shenanigans - this prevents it
-                if module == "luasnip.util.jsregexp" then
-                  return original_require("jsregexp")
-                end
-                return original_require(module)
-              end
-            '';
 
         luaCPath = lib.concatStringsSep ";" [
           "${pkgs.luajitPackages.jsregexp}/lib/lua/5.1/?.so"
           "/Users/jannis/dev/nvim-plugins/anyfmt/lua/anyfmt/?.dylib"
         ];
 
-        nvimPlugins = import ./nix/plugins.nix { inherit pkgs plugins; };
-
         luaPath = lib.concatStringsSep ";" ([
           "${vimPlugins.lazy-nvim}/lua/?.lua"
           "${vimPlugins.lazy-nvim}/lua/?/init.lua"
           "${pkgs.luajitPackages.jsregexp}/share/lua/5.1/?.lua"
-        ]
-        # ++ [ "${lazyPathFile}" ]
-        );
+        ]);
 
         neovim = pkgs.stdenv.mkDerivation {
           inherit (pkgs.neovim) version;
@@ -135,7 +128,7 @@
 
           buildInputs = [
             pkgs.neovim
-            nvimPlugins
+            neovimPlugins
           ];
 
           installPhase = ''
@@ -147,14 +140,13 @@
             cp -r ${./efm-langserver} $out/config/efm-langserver
 
             wrapProgram $out/bin/nvim \
-              --prefix PATH : ${lib.makeBinPath tools} \
+              --prefix PATH : ${lib.makeBinPath extraDependencies} \
               --set NVIM_APPNAME ${nvimAppName} \
               --set XDG_CONFIG_HOME $out/config \
-              --set PLUGIN_PATH ${nvimPlugins} \
               --set LUA_PATH '${luaPath}' \
               --set LUA_CPATH '${luaCPath}' \
-              --set NVIM_NIX_RTP '${treesitterDependencies}' \
-              # --add-flags "--cmd 'lua require([[lazy-patchs]])'" \
+              --set NVIM_NIX_PLUGIN_PATH ${neovimPlugins} \
+              --set NVIM_NIX_RTP '${treesitterGrammars}'
           '';
 
           meta = {
@@ -174,16 +166,17 @@
         };
 
         devShells.default = pkgs.mkShell {
-          packages = [ pkgs.neovim ] ++ tools;
+          packages = [ pkgs.neovim ] ++ extraDependencies;
           shellHook = ''
             temp_config_dir=$(mktemp -d)
 
             ln -sf /Users/jannis/.config/neovim/nvim $temp_config_dir/nvim
 
+            export NVIM_NIX_PLUGIN_PATH='${neovimPlugins}'
+            export NVIM_NIX_RTP='${treesitterGrammars}'
+
             export LUA_PATH='${luaPath}'
             export LUA_CPATH='${luaCPath}'
-            export PLUGIN_PATH='${nvimPlugins}'
-            export NVIM_NIX_RTP='${treesitterDependencies}'
             export XDG_CONFIG_HOME=$temp_config_dir
 
             echo "Starting neovim linked to config $temp_config_dir"

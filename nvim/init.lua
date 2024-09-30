@@ -6,7 +6,7 @@ local lazy = require "lazy"
 
 lazy.setup {
   spec = { import = "custom.plugins" },
-  root = os.getenv "PLUGIN_PATH",
+  root = os.getenv "NVIM_NIX_PLUGIN_PATH",
   defaults = {
     lazy = true,
   },
