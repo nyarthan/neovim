@@ -44,11 +44,11 @@ return {
               if i ~= total then return "" end
               return diagnostic_signs[diagnostic.severity] .. " "
             end,
-            format = function(diagnostic)
+            --[[ format = function(diagnostic)
               return vim.trim(Util.str_rm_trailing(diagnostic.message, "."))
-                .. " | "
-                .. vim.trim(Util.str_rm_trailing(diagnostic.source, "."))
-            end,
+                  .. " | "
+                  .. vim.trim(Util.str_rm_trailing(diagnostic.source, "."))
+            end, ]]
           },
         }
 
