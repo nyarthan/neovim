@@ -181,7 +181,7 @@
 
             echo "Starting neovim linked to config $temp_config_dir"
 
-            # nvim
+            nvim
           '';
         };
 
