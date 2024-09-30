@@ -1,8 +1,14 @@
-{ pkgs }:
+{ pkgs, languages }:
 let
-  inherit (pkgs) vimPlugins;
+  inherit (pkgs.vimPlugins) nvim-treesitter;
+
+  grammars =
+    if languages == "all" then
+      nvim-treesitter.withAllGrammars
+    else
+      nvim-treesitter.withPlugins (grammars: map (language: grammars.${language}) languages);
 in
 pkgs.symlinkJoin {
   name = "treesitter-dependencies";
-  paths = vimPlugins.nvim-treesitter.withAllGrammars.dependencies;
+  paths = grammars.dependencies;
 }

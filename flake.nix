@@ -72,22 +72,6 @@
             vimPlugins.mini-surround
           ];
 
-          extraDependencies = [
-            pkgs.ripgrep
-            pkgs.fd
-            pkgs.lua-language-server
-            pkgs.efm-langserver
-            pkgs.nil
-            pkgs.typescript-language-server
-            pkgs.yaml-language-server
-            pkgs.taplo
-            pkgs.rust-analyzer
-            pkgs.tailwindcss-language-server
-            pkgs.vscode-langservers-extracted # html / css /json / eslint
-            pkgs.nixfmt-rfc-style
-          ];
-
-          treesitterGrammars = import ./nix/packages/treesitter-grammars.nix { inherit pkgs; };
           neovimPlugins = import ./nix/packages/neovim-plugins.nix { inherit pkgs plugins; };
 
           luaCPath = lib.concatStringsSep ";" [
@@ -108,9 +92,15 @@
               neovimPlugins
               luaPath
               luaCPath
-              extraDependencies
-              treesitterGrammars
               ;
+            # treesitter = {
+            #   enable = true;
+            #   languages = [
+            #     "lua"
+            #     "c"
+            #     "ada"
+            #   ];
+            # };
           };
         in
         {
@@ -121,17 +111,17 @@
             program = "${self'.packages.default}/bin/nvim";
           };
 
-          devShells.default = import ./nix/shells/dev.nix {
-            inherit
-              pkgs
-              nvimAppName
-              neovimPlugins
-              luaPath
-              luaCPath
-              extraDependencies
-              treesitterGrammars
-              ;
-          };
+          # devShells.default = import ./nix/shells/dev.nix {
+          #   inherit
+          #     pkgs
+          #     nvimAppName
+          #     neovimPlugins
+          #     luaPath
+          #     luaCPath
+          #     extraDependencies
+          #     treesitterGrammars
+          #     ;
+          # };
 
           formatter = pkgs.nixfmt-rfc-style;
         };

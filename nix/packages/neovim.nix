@@ -1,14 +1,41 @@
+let
+  defaults = {
+    treesitter = {
+      enable = true;
+      languages = "all";
+    };
+  };
+in
 {
   pkgs,
   neovimPlugins,
   nvimAppName,
-  extraDependencies,
   luaPath,
   luaCPath,
-  treesitterGrammars,
+  treesitter ? defaults.treesitter,
 }:
 let
   inherit (pkgs) lib;
+
+  extraDependencies = [
+    pkgs.ripgrep
+    pkgs.fd
+    pkgs.lua-language-server
+    pkgs.efm-langserver
+    pkgs.nil
+    pkgs.typescript-language-server
+    pkgs.yaml-language-server
+    pkgs.taplo
+    pkgs.rust-analyzer
+    pkgs.tailwindcss-language-server
+    pkgs.vscode-langservers-extracted # html / css /json / eslint
+    pkgs.nixfmt-rfc-style
+  ];
+
+  treesitterGrammars = import ./treesitter-grammars.nix {
+    inherit pkgs;
+    inherit (treesitter) languages;
+  };
 in
 
 pkgs.stdenv.mkDerivation {
