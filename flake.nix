@@ -70,6 +70,7 @@
             vimPlugins.mini-indentscope
             vimPlugins.mini-hipatterns
             vimPlugins.mini-surround
+            vimPlugins.obsidian-nvim
           ];
 
           neovimPlugins = import ./nix/packages/neovim-plugins.nix { inherit pkgs plugins; };

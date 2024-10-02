@@ -35,12 +35,15 @@ autocmds.GitCheck
   })
   :enable()
 
--- TODO: efm + stylua inserts \n at EOF - styla cli does not
--- possibly related:
--- - https://github.com/mattn/efm-langserver/issues/241
--- - https://github.com/mattn/efm-langserver/issues/181
--- - https://github.com/neovim/neovim/issues/16842
--- stylua: ingore
+autocmds.ObsidianCheck
+  :new({
+    function(is_in_vault)
+      if not is_in_vault then return end
+
+      vim.api.nvim_exec_autocmds("User", { pattern = "ObsidianVaultDetected" })
+    end,
+  }, "/Users/jannis/second-brain/")
+  :enable()
 
 local client = vim.lsp.start {
   name = "anyls",
