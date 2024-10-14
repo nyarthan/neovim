@@ -8,6 +8,7 @@ let
 in
 {
   pkgs,
+  pkgs-stable,
   neovimPlugins,
   nvimAppName,
   luaPath,
@@ -30,6 +31,7 @@ let
     pkgs.tailwindcss-language-server
     pkgs.vscode-langservers-extracted # html / css /json / eslint
     pkgs.nixfmt-rfc-style
+    pkgs-stable.nodePackages.volar
   ];
 
   treesitterGrammars = import ./treesitter-grammars.nix {

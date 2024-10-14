@@ -282,6 +282,7 @@ return {
       cssls = {},
       jsonls = {},
       eslint = {},
+      volar = {},
     }
 
     for server, settings in pairs(servers) do

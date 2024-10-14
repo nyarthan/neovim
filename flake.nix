@@ -3,14 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
   outputs =
     {
       self,
-      nixpkgs,
       flake-parts,
+      nixpkgs-stable,
       ...
     }@inputs:
     let
@@ -29,10 +30,12 @@
           self',
           pkgs,
           system,
+          inputs',
           ...
         }:
         let
           inherit (pkgs) vimPlugins lib;
+          pkgs-stable = nixpkgs-stable.legacyPackages.${system};
 
           plugins = [
             vimPlugins.lazy-nvim
@@ -89,6 +92,7 @@
           neovim = import ./nix/packages/neovim.nix {
             inherit
               pkgs
+              pkgs-stable
               nvimAppName
               neovimPlugins
               luaPath
