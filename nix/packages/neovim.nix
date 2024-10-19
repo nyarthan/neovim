@@ -32,6 +32,7 @@ let
     pkgs.vscode-langservers-extracted # html / css /json / eslint
     pkgs.nixfmt-rfc-style
     pkgs-stable.nodePackages.volar
+    pkgs.deno
   ];
 
   treesitterGrammars = import ./treesitter-grammars.nix {

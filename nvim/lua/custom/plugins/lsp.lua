@@ -283,6 +283,7 @@ return {
       jsonls = {},
       eslint = {},
       volar = {},
+      denols = {},
     }
 
     for server, settings in pairs(servers) do
