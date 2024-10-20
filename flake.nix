@@ -4,7 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    flake-root.url = "github:srid/flake-root";
   };
 
   outputs =
@@ -12,12 +16,19 @@
       self,
       flake-parts,
       nixpkgs-stable,
+      treefmt-nix,
+      flake-root,
       ...
     }@inputs:
     let
       nvimAppName = "nvim-${builtins.substring 7 (builtins.stringLength self.narHash) self.narHash}";
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        treefmt-nix.flakeModule
+        flake-root.flakeModule
+      ];
+
       systems = [
         "aarch64-linux"
         "aarch64-darwin"
@@ -31,6 +42,7 @@
           pkgs,
           system,
           inputs',
+          config,
           ...
         }:
         let
@@ -98,23 +110,19 @@
               luaPath
               luaCPath
               ;
-            # treesitter = {
-            #   enable = true;
-            #   languages = [
-            #     "lua"
-            #     "c"
-            #     "ada"
-            #   ];
-            # };
           };
         in
         {
+          treefmt.config = import ./treefmt.nix { inherit pkgs config; };
+
           packages.default = neovim;
 
           apps.default = {
             type = "app";
             program = "${self'.packages.default}/bin/nvim";
           };
+
+          devShells.default = import ./nix/shells/env.nix { inherit pkgs; };
 
           # devShells.default = import ./nix/shells/dev.nix {
           #   inherit
@@ -128,7 +136,7 @@
           #     ;
           # };
 
-          formatter = pkgs.nixfmt-rfc-style;
+          formatter = config.treefmt.build.wrapper;
         };
 
     };
