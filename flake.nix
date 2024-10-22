@@ -85,6 +85,7 @@
             vimPlugins.mini-statusline
             vimPlugins.mini-bracketed
             vimPlugins.mini-diff
+            vimPlugins.mini-jump
             vimPlugins.obsidian-nvim
           ];
 
