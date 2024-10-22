@@ -84,6 +84,7 @@
             vimPlugins.mini-hipatterns
             vimPlugins.mini-surround
             vimPlugins.mini-statusline
+            vimPlugins.mini-bracketed
             vimPlugins.obsidian-nvim
           ];
 
