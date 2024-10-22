@@ -4,7 +4,7 @@
 pkgs.mkShell {
   packages = [
     pkgs.stylua
-    pkgs.mkformat
+    pkgs.mdformat
     pkgs.taplo
   ];
 }
