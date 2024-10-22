@@ -58,7 +58,6 @@
             vimPlugins.oil-nvim
             vimPlugins.mini-icons
             vimPlugins.baleia-nvim
-            vimPlugins.gitsigns-nvim
             vimPlugins.catppuccin-nvim
             vimPlugins.nvim-cmp
             vimPlugins.cmp-path
@@ -85,6 +84,7 @@
             vimPlugins.mini-surround
             vimPlugins.mini-statusline
             vimPlugins.mini-bracketed
+            vimPlugins.mini-diff
             vimPlugins.obsidian-nvim
           ];
 
