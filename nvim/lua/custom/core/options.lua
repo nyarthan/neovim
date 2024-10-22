@@ -54,3 +54,4 @@ opt.scrolloff = 10
 opt.hlsearch = true
 opt.cmdheight = 0
 vim.o.relativenumber = true
+vim.o.laststatus = 3

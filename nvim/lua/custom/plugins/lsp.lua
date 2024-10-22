@@ -91,12 +91,6 @@ return {
           })
         end
 
-        if
-          client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentSymbol)
-        then
-          require("nvim-navic").attach(client, event.buf)
-        end
-
         if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
           vim.api.nvim_create_autocmd("BufWritePost", {
             group = vim.api.nvim_create_augroup("LspAutoformat", { clear = true }),

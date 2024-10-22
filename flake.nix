@@ -70,8 +70,6 @@
             vimPlugins.fidget-nvim
             vimPlugins.cmp-nvim-lsp
             vimPlugins.guess-indent-nvim
-            vimPlugins.lualine-nvim
-            vimPlugins.nvim-navic
             vimPlugins.lazydev-nvim
             vimPlugins.lspkind-nvim
             vimPlugins.noice-nvim
@@ -85,6 +83,7 @@
             vimPlugins.mini-indentscope
             vimPlugins.mini-hipatterns
             vimPlugins.mini-surround
+            vimPlugins.mini-statusline
             vimPlugins.obsidian-nvim
           ];
 
