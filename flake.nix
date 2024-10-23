@@ -32,6 +32,7 @@
       systems = [
         "aarch64-linux"
         "aarch64-darwin"
+
         "x86_64-darwin"
         "x86_64-linux"
       ];
@@ -70,7 +71,6 @@
             vimPlugins.cmp-nvim-lsp
             vimPlugins.guess-indent-nvim
             vimPlugins.lazydev-nvim
-            vimPlugins.lspkind-nvim
             vimPlugins.noice-nvim
             vimPlugins.nui-nvim
             vimPlugins.nvim-notify

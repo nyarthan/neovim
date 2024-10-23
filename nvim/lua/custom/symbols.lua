@@ -27,6 +27,30 @@ M.nf = {
   cod_question = "",
   cod_info = "",
   cod_lightbulb = "",
+
+  cod = {
+    file = "",
+    go_to_file = "",
+    folder = "",
+    symbol_key = "",
+    symbol_method = "",
+    symbol_field = "",
+    symbol_variable = "",
+    symbol_class = "",
+    symbol_interface = "",
+    symbol_namespace = "",
+    symbol_property = "",
+    symbol_ruler = "",
+    symbol_enum = "",
+    symbol_keyword = "",
+    symbol_snippet = "",
+    symbol_color = "",
+    symbol_constant = "",
+    symbol_structure = "",
+    symbol_event = "",
+    symbol_operator = "",
+    symbol_parameter = "",
+  },
 }
 
 M.emoji = {}
@@ -34,6 +58,46 @@ M.emoji = {}
 M.unicode = {
   middle_dot = "·",
   light_quadruple_dash_vertical = "┊",
+  box_drawings = {
+    light = {
+      horizontal = "─",
+      vertical = "│",
+      down_and_right = "┌",
+      down_and_left = "┐",
+      up_and_right = "└",
+      up_and_left = "┘",
+    },
+  },
+}
+
+M.lsp = {
+  kind = {
+    Text = M.nf.cod.symbol_key,
+    Method = M.nf.cod.symbol_method,
+    Function = M.nf.cod.symbol_method,
+    Constructor = M.nf.cod.symbol_method,
+    Field = M.nf.cod.symbol_field,
+    Variable = M.nf.cod.symbol_variable,
+    Class = M.nf.cod.symbol_class,
+    Interface = M.nf.cod.symbol_interface,
+    Module = M.nf.cod.symbol_namespace,
+    Property = M.nf.cod.symbol_property,
+    Unit = M.nf.cod.symbol_ruler,
+    Value = M.nf.cod.symbol_enum,
+    Enum = M.nf.cod.symbol_enum,
+    Keyword = M.nf.cod.symbol_keyword,
+    Snippet = M.nf.cod.symbol_snippet,
+    Color = M.nf.cod.symbol_color,
+    File = M.nf.cod.file,
+    Reference = M.nf.cod.go_to_file,
+    Folder = M.nf.cod.folder,
+    EnumMember = M.nf.cod.symbol_enum,
+    Constant = M.nf.cod.symbol_constant,
+    Struct = M.nf.cod.symbol_structure,
+    Event = M.nf.cod.symbol_event,
+    Operator = M.nf.cod.symbol_operator,
+    TypeParameter = M.nf.cod.symbol_parameter,
+  },
 }
 
 return M

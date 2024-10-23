@@ -55,3 +55,4 @@ opt.hlsearch = true
 opt.cmdheight = 0
 vim.o.relativenumber = true
 vim.o.laststatus = 3
+vim.o.winblend = 0
