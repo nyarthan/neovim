@@ -93,12 +93,36 @@
         "type": "github"
       }
     },
+    "nvim-flake": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1730770087,
+        "narHash": "sha256-NzjfMY9s7eXGIXDTm2wECMgRnpe3OydXCFT9sdA/Ako=",
+        "owner": "nyarthan",
+        "repo": "nvim-flake",
+        "rev": "7ef780d29dfad58413672e330ba9f953ac5dcc7a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyarthan",
+        "repo": "nvim-flake",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
         "flake-root": "flake-root",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
+        "nvim-flake": "nvim-flake",
         "treefmt-nix": "treefmt-nix"
       }
     },

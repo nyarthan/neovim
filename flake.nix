@@ -9,6 +9,10 @@
 
     treefmt-nix.url = "github:numtide/treefmt-nix";
     flake-root.url = "github:srid/flake-root";
+
+    nvim-flake.url = "github:nyarthan/nvim-flake";
+    nvim-flake.inputs.nixpkgs.follows = "nixpkgs";
+    nvim-flake.inputs.flake-parts.follows = "flake-parts";
   };
 
   outputs =
@@ -18,6 +22,7 @@
       nixpkgs-stable,
       treefmt-nix,
       flake-root,
+      nvim-flake,
       ...
     }@inputs:
     let
@@ -111,6 +116,10 @@
               luaPath
               luaCPath
               ;
+            treesitter-dependencies = nvim-flake.treesitter-dependencies {
+              inherit pkgs;
+              grammars = "all";
+            };
           };
         in
         {

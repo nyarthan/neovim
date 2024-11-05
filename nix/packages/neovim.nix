@@ -1,11 +1,3 @@
-let
-  defaults = {
-    treesitter = {
-      enable = true;
-      languages = "all";
-    };
-  };
-in
 {
   pkgs,
   pkgs-stable,
@@ -13,7 +5,7 @@ in
   nvimAppName,
   luaPath,
   luaCPath,
-  treesitter ? defaults.treesitter,
+  treesitter-dependencies,
 }:
 let
   inherit (pkgs) lib;
@@ -34,11 +26,6 @@ let
     pkgs-stable.nodePackages.volar
     pkgs.deno
   ];
-
-  treesitterGrammars = import ./treesitter-grammars.nix {
-    inherit pkgs;
-    inherit (treesitter) languages;
-  };
 in
 
 pkgs.stdenv.mkDerivation {
@@ -70,7 +57,7 @@ pkgs.stdenv.mkDerivation {
       --set LUA_PATH '${luaPath}' \
       --set LUA_CPATH '${luaCPath}' \
       --set NVIM_NIX_PLUGIN_PATH '${neovimPlugins}' \
-      --set NVIM_NIX_RTP '${treesitterGrammars}'
+      --set NVIM_NIX_RTP '${treesitter-dependencies}'
   '';
 
   meta = {
