@@ -22,7 +22,6 @@ return {
     "hrsh7th/cmp-nvim-lsp",
   },
   config = function()
-    local a = 1
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("LspAttach", { clear = true }),
       callback = function(event)
@@ -261,9 +260,7 @@ return {
             version = "LuaJIT",
           },
           workspace = {
-            library = {
-              vim.fn.expand "~/.config/neovim",
-            },
+            ignoreDir = { ".direnv" },
           },
         },
       },
