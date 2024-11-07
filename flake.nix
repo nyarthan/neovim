@@ -92,6 +92,7 @@
             vimPlugins.mini-diff
             vimPlugins.mini-jump
             vimPlugins.mini-starter
+            vimPlugins.mini-sessions
             vimPlugins.obsidian-nvim
           ];
 
