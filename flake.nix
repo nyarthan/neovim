@@ -91,6 +91,7 @@
             vimPlugins.mini-bracketed
             vimPlugins.mini-diff
             vimPlugins.mini-jump
+            vimPlugins.mini-starter
             vimPlugins.obsidian-nvim
           ];
 
