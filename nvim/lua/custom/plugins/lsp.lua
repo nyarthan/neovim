@@ -94,7 +94,7 @@ return {
         if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
           vim.api.nvim_create_autocmd("BufWritePost", {
             group = vim.api.nvim_create_augroup("LspAutoformat", { clear = true }),
-            callback = function() vim.lsp.buf.format { async = true } end,
+            callback = function() vim.lsp.buf.format { async = false } end,
           })
 
           -- TODO: this is for future me
