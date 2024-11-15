@@ -8,9 +8,10 @@ local function get_diagnostic_symbol(lnum)
   local diagnostics = vim.diagnostic.get(0, { lnum = lnum - 1 })
   if #diagnostics == 0 then return "   " end
 
+  --- @type vim.diagnostic.Severity
   local max_severity = vim.diagnostic.severity.HINT
+
   for _, d in ipairs(diagnostics) do
-    ---@diagnostic disable-next-line: cast-local-type
     if d.severity < max_severity then max_severity = d.severity end
   end
 
@@ -40,7 +41,7 @@ M.git = function()
   ---@diagnostic disable-next-line: undefined-field
   local data = _G.MiniDiff.get_buf_data() or {}
   local hunks = data.hunks or {}
-  return " " .. M.create_git_statuscolumn(hunks) .. " "
+  return string.format(" %s ", M.create_git_statuscolumn(hunks))
 end
 
 M.create_git_statuscolumn = function(hunks)
