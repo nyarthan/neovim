@@ -19,11 +19,6 @@ return {
       defaults = {
         mappings = {
           n = {
-            ["<C-b>"] = function(prompt_bufnr)
-              print(prompt_bufnr)
-              local picker = require("telescope.actions.state").get_current_picker(prompt_bufnr)
-              vim.g.baleia.once(picker.results_bufnr)
-            end,
             ["<C-t>"] = function(bufnr)
               print(bufnr)
               require("trouble.sources.telescope").open(bufnr)

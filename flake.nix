@@ -63,7 +63,6 @@
             vimPlugins.plenary-nvim
             vimPlugins.oil-nvim
             vimPlugins.mini-icons
-            vimPlugins.baleia-nvim
             vimPlugins.catppuccin-nvim
             vimPlugins.nvim-cmp
             vimPlugins.cmp-path
