@@ -4,9 +4,32 @@ local M = {}
 
 local function get_line_number_width() return #tostring(vim.api.nvim_buf_line_count(0)) end
 
+local function get_diagnostic_symbol(lnum)
+  local diagnostics = vim.diagnostic.get(0, { lnum = lnum - 1 })
+  if #diagnostics == 0 then return "   " end
+
+  local max_severity = vim.diagnostic.severity.HINT
+  for _, d in ipairs(diagnostics) do
+    ---@diagnostic disable-next-line: cast-local-type
+    if d.severity < max_severity then max_severity = d.severity end
+  end
+
+  local diagnostic_symbols = {
+    [vim.diagnostic.severity.ERROR] = { icon = Symbols.nf.cod_error, hl = "DiagnosticError" },
+    [vim.diagnostic.severity.WARN] = { icon = Symbols.nf.cod_warning, hl = "DiagnosticWarn" },
+    [vim.diagnostic.severity.INFO] = { icon = Symbols.nf.cod_info, hl = "DiagnosticInfo" },
+    [vim.diagnostic.severity.HINT] = { icon = Symbols.nf.cod_question, hl = "DiagnosticHint" },
+  }
+
+  local diagnostic = diagnostic_symbols[max_severity]
+  if diagnostic then return string.format("%%#%s# %s %%*", diagnostic.hl, diagnostic.icon) end
+  return "   "
+end
+
 M.get_text = function()
   local text = ""
   text = table.concat {
+    get_diagnostic_symbol(vim.v.lnum),
     M.number(),
     M.git(),
   }
@@ -14,9 +37,10 @@ M.get_text = function()
 end
 
 M.git = function()
+  ---@diagnostic disable-next-line: undefined-field
   local data = _G.MiniDiff.get_buf_data() or {}
   local hunks = data.hunks or {}
-  return M.create_git_statuscolumn(hunks)
+  return " " .. M.create_git_statuscolumn(hunks) .. " "
 end
 
 M.create_git_statuscolumn = function(hunks)
