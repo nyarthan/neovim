@@ -67,6 +67,15 @@ M.unicode = {
       up_and_right = "└",
       up_and_left = "┘",
     },
+    heavy = {
+      horizontal = "━",
+      vertical = "┃",
+      right = "╺",
+      down_and_right = "┏",
+      down_and_left = "┓",
+      up_and_right = "┗",
+      up_and_left = "┛",
+    },
   },
 }
 

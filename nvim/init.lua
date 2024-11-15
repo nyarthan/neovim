@@ -23,6 +23,9 @@ lazy.setup {
   },
 }
 
+
+require("custom.statuscolumn").setup();
+
 local autocmds = require "custom.core.autocmds"
 
 autocmds.GitCheck
