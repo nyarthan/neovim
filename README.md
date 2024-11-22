@@ -5,3 +5,8 @@
 </h1>
 
 # Neovim Config
+
+## Roadmap
+- [ ] `vim.uv` typings
+- [x] oil permission error
+- [ ] Open oil from start screen

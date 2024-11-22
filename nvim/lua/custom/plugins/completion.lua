@@ -86,7 +86,7 @@ return {
           return {
             abbr = vim_item.abbr,
             kind = string.format(" %s ", Symbols.lsp.kind[vim_item.kind]),
-            menu = string.format("    (%s) [%s]", vim_item.kind, string.upper(source or 'unknown')),
+            menu = string.format("    (%s) [%s]", vim_item.kind, string.upper(source or "unknown")),
           }
         end,
       },

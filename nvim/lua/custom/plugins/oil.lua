@@ -1,5 +1,4 @@
 local Util = require "custom.util"
-local Color = require "custom.color"
 
 local function is_in_git_flake(path)
   return Util.is_file_in_root(path, { root_markers = { "flake.nix", ".git/" }, match_type = "all" })
@@ -7,6 +6,7 @@ end
 
 return {
   "stevearc/oil.nvim",
+  lazy = false,
   opts = {
     default_file_explorer = true,
     delete_to_trash = true,
@@ -39,7 +39,7 @@ return {
       "-",
       Util.make_cmd "Oil",
       mode = "n",
-      desc = string.format("%s Open parent directory", Color.green "[OIL]"),
+      desc = "Open parent directory",
     },
   },
 }
