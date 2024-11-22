@@ -94,6 +94,7 @@
             vimPlugins.mini-sessions
             vimPlugins.obsidian-nvim
             vimPlugins.hardtime-nvim
+            vimPlugins.rustaceanvim
           ];
 
           neovimPlugins = import ./nix/packages/neovim-plugins.nix { inherit pkgs plugins; };

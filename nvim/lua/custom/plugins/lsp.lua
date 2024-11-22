@@ -268,7 +268,6 @@ return {
       ts_ls = {},
       yamlls = {},
       taplo = {},
-      rust_analyzer = {},
       html = {},
       cssls = {},
       jsonls = {},
@@ -278,7 +277,6 @@ return {
     }
 
     for server, settings in pairs(servers) do
-      local cap = capabilities
       require("lspconfig")[server].setup {
         settings = settings,
         init_options = { documentFormatting = false },
