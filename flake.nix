@@ -95,6 +95,7 @@
             vimPlugins.obsidian-nvim
             vimPlugins.hardtime-nvim
             vimPlugins.rustaceanvim
+            vimPlugins.kanagawa-nvim
           ];
 
           neovimPlugins = import ./nix/packages/neovim-plugins.nix { inherit pkgs plugins; };
