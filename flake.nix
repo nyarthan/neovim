@@ -97,6 +97,7 @@
             vimPlugins.rustaceanvim
             vimPlugins.kanagawa-nvim
             vimPlugins.nvim-ts-autotag
+            vimPlugins.crates-nvim
           ];
 
           neovimPlugins = import ./nix/packages/neovim-plugins.nix { inherit pkgs plugins; };
