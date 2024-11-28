@@ -95,9 +95,9 @@
             vimPlugins.obsidian-nvim
             vimPlugins.hardtime-nvim
             vimPlugins.rustaceanvim
-            vimPlugins.kanagawa-nvim
             vimPlugins.nvim-ts-autotag
             vimPlugins.crates-nvim
+            (pkgs.callPackage ./nix/packages/vesper-nvim.nix { })
           ];
 
           neovimPlugins = import ./nix/packages/neovim-plugins.nix { inherit pkgs plugins; };
