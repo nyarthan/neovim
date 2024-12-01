@@ -274,6 +274,7 @@ return {
       eslint = {},
       volar = {},
       denols = {},
+      rust_analyzer = {}
     }
 
     for server, settings in pairs(servers) do
