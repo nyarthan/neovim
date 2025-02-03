@@ -1,4 +1,4 @@
-local Job = require "plenary.Job"
+local Job = require "plenary.job"
 
 local Util = require "custom.util"
 

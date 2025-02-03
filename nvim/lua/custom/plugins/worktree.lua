@@ -1,6 +1,7 @@
 return {
   "worktree.nvim",
+  enabled = false,
   dev = true,
-  dependencies = { "vim-lua/plenary.nvim" },
+  dependencies = { "nvim-lua/plenary.nvim" },
   opts = {},
 }
