@@ -14,7 +14,7 @@ lazy.setup {
     missing = false,
   },
   dev = {
-    path = "~/dev/nvim-plugins",
+    path = "~/dev/support/nvim-plugins",
   },
   performance = {
     rtp = {
