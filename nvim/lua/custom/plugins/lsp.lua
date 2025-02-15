@@ -3,7 +3,6 @@ local Symbols = require "custom.symbols"
 
 return {
   "neovim/nvim-lspconfig",
-  dev = true,
   event = { "BufEnter" },
   dependencies = {
     {
