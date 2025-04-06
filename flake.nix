@@ -70,7 +70,6 @@
             vimPlugins.comment-nvim
             vimPlugins.nvim-ts-context-commentstring
             vimPlugins.nvim-lspconfig
-            vimPlugins.fidget-nvim
             vimPlugins.cmp-nvim-lsp
             vimPlugins.guess-indent-nvim
             vimPlugins.lazydev-nvim
@@ -99,6 +98,7 @@
             vimPlugins.blink-cmp
             vimPlugins.colorful-menu-nvim
             vimPlugins.catppuccin-nvim
+            vimPlugins.snacks-nvim
             (pkgs.callPackage ./nix/packages/vesper-nvim.nix { })
           ];
 
