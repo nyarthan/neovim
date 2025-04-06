@@ -74,7 +74,6 @@
             vimPlugins.guess-indent-nvim
             vimPlugins.lazydev-nvim
             vimPlugins.noice-nvim
-            vimPlugins.nui-nvim
             vimPlugins.nvim-notify
             vimPlugins.trouble-nvim
             vimPlugins.render-markdown-nvim
@@ -99,6 +98,7 @@
             vimPlugins.colorful-menu-nvim
             vimPlugins.catppuccin-nvim
             vimPlugins.snacks-nvim
+            (pkgs.callPackage ./nix/packages/nui-nvim.nix {})
             (pkgs.callPackage ./nix/packages/vesper-nvim.nix { })
           ];
 
