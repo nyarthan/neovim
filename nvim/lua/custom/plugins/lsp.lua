@@ -124,7 +124,6 @@ return {
       jsonls = {},
       eslint = {},
       volar = {},
-      denols = {},
       rust_analyzer = {},
     }
 

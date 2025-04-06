@@ -63,7 +63,6 @@
             vimPlugins.plenary-nvim
             vimPlugins.oil-nvim
             vimPlugins.mini-icons
-            vimPlugins.catppuccin-nvim
             vimPlugins.nvim-cmp
             vimPlugins.cmp-path
             vimPlugins.cmp-buffer
@@ -99,6 +98,7 @@
             vimPlugins.crates-nvim
             vimPlugins.blink-cmp
             vimPlugins.colorful-menu-nvim
+            vimPlugins.catppuccin-nvim
             (pkgs.callPackage ./nix/packages/vesper-nvim.nix { })
           ];
 
