@@ -6,6 +6,8 @@ return {
   opts = {
     bigfile = { enabled = true },
     bufdelete = { enabled = true },
-		notifier = {enabled = true}
+    notifier = { enabled = true },
+    quickfile = { enabled = true },
+    rename = {enabled = true}
   },
 }
