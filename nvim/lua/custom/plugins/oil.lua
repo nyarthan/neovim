@@ -14,7 +14,13 @@ return {
     skip_confirm_for_simple_edits = true,
     prompt_save_on_select_new_entry = false,
     view_options = {
+      show_hidden = true,
+      natural_order = true,
       is_always_hidden = function(name)
+        if name == ".." then return true end
+        if name == ".git" then return true end
+        if name == ".devnev" then return true end
+        if name == ".direnv" then return true end
         if name ~= "result" then return false end
 
         local stat = vim.uv.fs_lstat(name)
