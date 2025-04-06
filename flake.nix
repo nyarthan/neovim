@@ -97,6 +97,8 @@
             vimPlugins.rustaceanvim
             vimPlugins.nvim-ts-autotag
             vimPlugins.crates-nvim
+            vimPlugins.blink-cmp
+            vimPlugins.colorful-menu-nvim
             (pkgs.callPackage ./nix/packages/vesper-nvim.nix { })
           ];
 

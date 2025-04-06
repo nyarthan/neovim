@@ -1,6 +1,7 @@
 return {
   "nvim-cmp",
   event = "InsertEnter",
+  enabled = false,
   dependencies = {
     "cmp-path",
     "cmp-buffer",
