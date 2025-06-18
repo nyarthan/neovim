@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-stable,
   neovimPlugins,
   nvimAppName,
   luaPath,
@@ -23,7 +22,7 @@ let
     pkgs.tailwindcss-language-server
     pkgs.vscode-langservers-extracted # html / css /json / eslint
     pkgs.nixfmt-rfc-style
-    pkgs-stable.nodePackages.volar
+    pkgs.vue-language-server
     pkgs.deno
   ];
 in

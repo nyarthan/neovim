@@ -152,7 +152,7 @@ return {
       cssls = {},
       jsonls = {},
       eslint = {},
-      volar = {},
+      vue_ls = {},
       rust_analyzer = {},
     }
 
