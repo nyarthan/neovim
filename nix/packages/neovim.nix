@@ -5,6 +5,7 @@
   luaPath,
   luaCPath,
   treesitter-dependencies,
+  ...
 }:
 let
   inherit (pkgs) lib;
