@@ -96,7 +96,7 @@
             vimPlugins.crates-nvim
             vimPlugins.blink-cmp
             vimPlugins.colorful-menu-nvim
-            vimPlugins.catppuccin-nvim
+            vimPlugins.base16-nvim
             vimPlugins.snacks-nvim
             (pkgs.callPackage ./nix/packages/nui-nvim.nix {})
             (pkgs.callPackage ./nix/packages/vesper-nvim.nix { })
