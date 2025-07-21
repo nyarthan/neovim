@@ -73,7 +73,6 @@
             vimPlugins.cmp-nvim-lsp
             vimPlugins.guess-indent-nvim
             vimPlugins.lazydev-nvim
-            vimPlugins.noice-nvim
             vimPlugins.nvim-notify
             vimPlugins.trouble-nvim
             vimPlugins.render-markdown-nvim

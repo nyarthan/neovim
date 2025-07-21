@@ -8,6 +8,6 @@ return {
     bufdelete = { enabled = true },
     notifier = { enabled = true },
     quickfile = { enabled = true },
-    rename = {enabled = true}
+    rename = { enabled = true }
   },
 }
