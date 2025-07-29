@@ -144,7 +144,7 @@ return {
           },
         },
       },
-      nil_ls = {},
+      nixd = {},
       ts_ls = {},
       yamlls = {},
       taplo = {},

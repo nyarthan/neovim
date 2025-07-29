@@ -11,20 +11,6 @@ let
   inherit (pkgs) lib;
 
   extraDependencies = [
-    pkgs.ripgrep
-    pkgs.fd
-    pkgs.lua-language-server
-    pkgs.efm-langserver
-    pkgs.nil
-    pkgs.typescript-language-server
-    pkgs.yaml-language-server
-    pkgs.taplo
-    pkgs.rust-analyzer
-    pkgs.tailwindcss-language-server
-    pkgs.vscode-langservers-extracted # html / css /json / eslint
-    pkgs.nixfmt-rfc-style
-    pkgs.vue-language-server
-    pkgs.deno
   ];
 in
 
