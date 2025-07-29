@@ -1,5 +1,3 @@
-local Symbols = require "custom.symbols"
-
 local keys = {
   { "gh", op = "apply", desc = "Apply hunks", mode = { "n", "x" } },
   { "gH", op = "reset", desc = "Reset hunks", mode = { "n", "x" } },
@@ -12,11 +10,6 @@ local keys = {
 local opts = {
   view = {
     style = "sign",
-    signs = {
-      add = Symbols.nf.oct_diff_added,
-      change = Symbols.nf.oct_diff_modified,
-      delete = Symbols.nf.oct_diff_removed,
-    },
     priority = 199,
   },
   mappings = {

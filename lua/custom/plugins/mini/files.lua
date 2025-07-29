@@ -5,8 +5,15 @@ return {
     files.setup {
       windows = {preview = true}
     }
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesActionRename",
+    callback = function(event)
+      Snacks.rename.on_rename_file(event.data.from, event.data.to)
+    end,
+  })
   end,
   keys = {
-    { "-", ":lua MiniFiles.open()<CR>", desc = "Open File Picker" },
+    { "<leader>e", ":lua MiniFiles.open()<CR>", desc = "Open File [E]xplorer" },
   },
 }

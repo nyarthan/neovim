@@ -73,17 +73,9 @@ return {
           },
         }
 
-        local t_builtin = require "telescope.builtin"
-
         local map = Util.make_map { mode = "n", buffer = event.buf }
 
-        map("gd", t_builtin.lsp_definitions)
         map("gD", vim.lsp.buf.declaration)
-        map("gr", t_builtin.lsp_references)
-        map("gI", t_builtin.lsp_implementations)
-        map("<Leader>gd", t_builtin.lsp_type_definitions)
-        map("<Leader>gs", t_builtin.lsp_document_symbols)
-        map("<Leader>gws", t_builtin.lsp_dynamic_workspace_symbols)
         map("<Leader>rn", vim.lsp.buf.rename)
         map("<Leader>ca", vim.lsp.buf.code_action, { mode = { "x" } })
         map("<Leader>d", vim.diagnostic.open_float)

@@ -27,8 +27,6 @@ lazyCat.setup(nixCats.pawsible { "allPlugins", "start", "lazy.nvim" }, {
   },
 })
 
-require("custom.statuscolumn").setup()
-
 local autocmds = require "custom.core.autocmds"
 
 autocmds.GitCheck

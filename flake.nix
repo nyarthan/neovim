@@ -93,9 +93,6 @@
                 vimPlugins.plenary-nvim
                 vimPlugins.rustaceanvim
                 vimPlugins.snacks-nvim
-                vimPlugins.telescope-fzf-native-nvim
-                vimPlugins.telescope-nvim
-                vimPlugins.telescope-ui-select-nvim
                 vimPlugins.trouble-nvim
                 (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
               ];
