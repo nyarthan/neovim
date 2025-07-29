@@ -63,47 +63,47 @@
             in
             {
               general = [
-                vimPlugins.lazy-nvim
-                vimPlugins.telescope-nvim
-                vimPlugins.telescope-fzf-native-nvim
-                vimPlugins.nvim-treesitter.withAllGrammars
-                vimPlugins.plenary-nvim
-                vimPlugins.oil-nvim
-                vimPlugins.mini-icons
-                vimPlugins.nvim-cmp
-                vimPlugins.cmp-path
+                vimPlugins.base16-nvim
+                vimPlugins.blink-cmp
                 vimPlugins.cmp-buffer
-                vimPlugins.luasnip
-                vimPlugins.comment-nvim
-                vimPlugins.nvim-ts-context-commentstring
-                vimPlugins.nvim-lspconfig
                 vimPlugins.cmp-nvim-lsp
+                vimPlugins.cmp-path
+                vimPlugins.colorful-menu-nvim
+                vimPlugins.comment-nvim
+                vimPlugins.crates-nvim
                 vimPlugins.guess-indent-nvim
+                vimPlugins.hardtime-nvim
+                vimPlugins.lazy-nvim
                 vimPlugins.lazydev-nvim
-                vimPlugins.nvim-notify
-                vimPlugins.trouble-nvim
-                vimPlugins.render-markdown-nvim
-                vimPlugins.telescope-ui-select-nvim
-                vimPlugins.mini-pairs
-                vimPlugins.mini-move
-                vimPlugins.mini-indentscope
-                vimPlugins.mini-hipatterns
-                vimPlugins.mini-surround
-                vimPlugins.mini-statusline
+                vimPlugins.luasnip
                 vimPlugins.mini-bracketed
                 vimPlugins.mini-diff
+                vimPlugins.mini-files
+                vimPlugins.mini-hipatterns
+                vimPlugins.mini-icons
+                vimPlugins.mini-indentscope
                 vimPlugins.mini-jump
-                vimPlugins.mini-starter
+                vimPlugins.mini-move
+                vimPlugins.mini-pairs
                 vimPlugins.mini-sessions
-                vimPlugins.obsidian-nvim
-                vimPlugins.hardtime-nvim
-                vimPlugins.rustaceanvim
+                vimPlugins.mini-starter
+                vimPlugins.mini-statusline
+                vimPlugins.mini-surround
+                vimPlugins.nvim-cmp
+                vimPlugins.nvim-lspconfig
+                vimPlugins.nvim-notify
+                vimPlugins.nvim-treesitter.withAllGrammars
                 vimPlugins.nvim-ts-autotag
-                vimPlugins.crates-nvim
-                vimPlugins.blink-cmp
-                vimPlugins.colorful-menu-nvim
-                vimPlugins.base16-nvim
+                vimPlugins.nvim-ts-context-commentstring
+                vimPlugins.obsidian-nvim
+                vimPlugins.plenary-nvim
+                vimPlugins.render-markdown-nvim
+                vimPlugins.rustaceanvim
                 vimPlugins.snacks-nvim
+                vimPlugins.telescope-fzf-native-nvim
+                vimPlugins.telescope-nvim
+                vimPlugins.telescope-ui-select-nvim
+                vimPlugins.trouble-nvim
                 (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
               ];
             };
