@@ -1,12 +1,16 @@
-require "custom.core.startup"
+require("nixCatsUtils").setup {
+  non_nix_value = true,
+}
+
+vim.g.have_nerd_font = nixCats "have_nerd_font"
+
 require "custom.core.options"
 require "custom.core.keymaps"
 
-local lazy = require "lazy"
+local lazyCat = require "nixCatsUtils.lazyCat"
 
-lazy.setup {
+lazyCat.setup(nixCats.pawsible { "allPlugins", "start", "lazy.nvim" }, {
   spec = { import = "custom.plugins" },
-  root = os.getenv "NVIM_NIX_PLUGIN_PATH",
   defaults = {
     lazy = true,
   },
@@ -21,7 +25,7 @@ lazy.setup {
       reset = false,
     },
   },
-}
+})
 
 require("custom.statuscolumn").setup()
 
