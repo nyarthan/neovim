@@ -7,19 +7,12 @@
 
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
-    # flake-parts.url = "github:hercules-ci/flake-parts";
-
-    # treefmt-nix.url = "github:numtide/treefmt-nix";
-    # flake-root.url = "github:srid/flake-root";
   };
 
   outputs =
     {
-      self,
       nixpkgs,
       nixCats,
-      neovim-nightly-overlay,
       ...
     }@inputs:
     let
@@ -38,11 +31,6 @@
       categoryDefinitions =
         {
           pkgs,
-          settings,
-          categories,
-          extra,
-          name,
-          mkPlugin,
           ...
         }:
         {
@@ -53,9 +41,19 @@
               pkgs.fd
               pkgs.stdenv.cc.cc
               pkgs.nix-doc
-              pkgs.lua-language-server
               pkgs.nixd
               pkgs.stylua
+              pkgs.lua-language-server
+              pkgs.efm-langserver
+              pkgs.typescript-language-server
+              pkgs.yaml-language-server
+              pkgs.taplo
+              pkgs.rust-analyzer
+              pkgs.tailwindcss-language-server
+              pkgs.vscode-langservers-extracted # html / css /json / eslint
+              pkgs.nixfmt-rfc-style
+              pkgs.vue-language-server
+              pkgs.deno
             ];
           };
 
@@ -107,14 +105,13 @@
                 vimPlugins.base16-nvim
                 vimPlugins.snacks-nvim
                 (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
-                (pkgs.callPackage ./nix/packages/vesper-nvim.nix { })
               ];
             };
         };
 
       packageDefinitions = {
         nvim =
-          { pkgs, name, ... }:
+          { pkgs, ... }:
           {
             settings = {
               suffix-path = true;
@@ -147,14 +144,14 @@
       {
         packages = utils.mkAllWithDefault defaultPackage;
 
-        /* devShells = {
+        devShells = {
           default = pkgs.mkShell {
             name = defaultPackageName;
             packages = [ defaultPackage ];
             inputsFrom = [ ];
             shellHook = '''';
           };
-        }; */
+        };
       }
     )
     // {
