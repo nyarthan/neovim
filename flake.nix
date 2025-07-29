@@ -65,14 +65,10 @@
               general = [
                 vimPlugins.base16-nvim
                 vimPlugins.blink-cmp
-                vimPlugins.cmp-buffer
-                vimPlugins.cmp-nvim-lsp
-                vimPlugins.cmp-path
                 vimPlugins.colorful-menu-nvim
                 vimPlugins.comment-nvim
                 vimPlugins.crates-nvim
                 vimPlugins.guess-indent-nvim
-                vimPlugins.hardtime-nvim
                 vimPlugins.lazy-nvim
                 vimPlugins.lazydev-nvim
                 vimPlugins.luasnip
@@ -89,15 +85,12 @@
                 vimPlugins.mini-starter
                 vimPlugins.mini-statusline
                 vimPlugins.mini-surround
-                vimPlugins.nvim-cmp
                 vimPlugins.nvim-lspconfig
                 vimPlugins.nvim-notify
                 vimPlugins.nvim-treesitter.withAllGrammars
                 vimPlugins.nvim-ts-autotag
                 vimPlugins.nvim-ts-context-commentstring
-                vimPlugins.obsidian-nvim
                 vimPlugins.plenary-nvim
-                vimPlugins.render-markdown-nvim
                 vimPlugins.rustaceanvim
                 vimPlugins.snacks-nvim
                 vimPlugins.telescope-fzf-native-nvim
