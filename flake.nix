@@ -71,7 +71,6 @@
                 vimPlugins.guess-indent-nvim
                 vimPlugins.lazy-nvim
                 vimPlugins.lazydev-nvim
-                vimPlugins.luasnip
                 vimPlugins.mini-bracketed
                 vimPlugins.mini-diff
                 vimPlugins.mini-files
@@ -91,7 +90,7 @@
                 vimPlugins.nvim-ts-autotag
                 vimPlugins.nvim-ts-context-commentstring
                 vimPlugins.plenary-nvim
-                vimPlugins.rustaceanvim
+                # vimPlugins.rustaceanvim
                 vimPlugins.snacks-nvim
                 vimPlugins.trouble-nvim
                 (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
