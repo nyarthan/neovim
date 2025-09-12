@@ -4,6 +4,9 @@ require("nixCatsUtils").setup {
 
 vim.g.have_nerd_font = nixCats "have_nerd_font"
 
+require "custom.core.standard-plugins"
+require "custom.core.providers"
+
 require "custom.core.options"
 require "custom.core.keymaps"
 
