@@ -68,7 +68,6 @@
                 vimPlugins.colorful-menu-nvim
                 vimPlugins.comment-nvim
                 vimPlugins.crates-nvim
-                vimPlugins.guess-indent-nvim
                 vimPlugins.lazy-nvim
                 vimPlugins.lazydev-nvim
                 vimPlugins.mini-bracketed
@@ -89,7 +88,6 @@
                 vimPlugins.nvim-treesitter.withAllGrammars
                 vimPlugins.nvim-ts-autotag
                 vimPlugins.nvim-ts-context-commentstring
-                vimPlugins.plenary-nvim
                 # vimPlugins.rustaceanvim
                 vimPlugins.snacks-nvim
                 vimPlugins.trouble-nvim
