@@ -66,7 +66,6 @@
                 vimPlugins.base16-nvim
                 vimPlugins.blink-cmp
                 vimPlugins.colorful-menu-nvim
-                vimPlugins.comment-nvim
                 vimPlugins.crates-nvim
                 vimPlugins.lazy-nvim
                 vimPlugins.lazydev-nvim
