@@ -116,6 +116,9 @@ vim.lsp.config("lua_ls", {
       },
     })
   end,
+  settings = {
+	  Lua = {}
+  }
 })
 
 local lsp = vim.lsp
