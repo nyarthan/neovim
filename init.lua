@@ -11,6 +11,7 @@ require "custom.core.options"
 require "custom.core.keymaps"
 
 require "custom.core.lsp"
+require "custom.core.lsp-progress"
 
 local lazyCat = require "nixCatsUtils.lazyCat"
 

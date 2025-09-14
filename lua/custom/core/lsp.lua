@@ -7,6 +7,14 @@ local FILETYPES = {
     "typescriptreact",
     "typescript.jsx",
   },
+  jsonLike = {
+    "json",
+    "jsonc",
+  },
+  yaml = {
+    "yaml",
+    "yml",
+  },
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -15,6 +23,9 @@ capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 vim.lsp.config("*", {
   capabilities = capabilities,
   init_options = { hostInfo = "neovim" },
+  root_markers = {
+    ".git/",
+  },
 })
 
 vim.lsp.config("ts_ls", {
@@ -30,46 +41,119 @@ vim.lsp.config("ts_ls", {
   },
 })
 
-vim.lsp.enable "ts_ls"
+vim.lsp.config("jsonls", {
+  cmd = { "vscode-json-language-server", "--stdio" },
+  filetypes = FILETYPES.jsonLike,
+  settings = {
+    json = {
+      schemas = {
+        { url = "https://www.schemastore.org/package.json", fileMatch = { "package.json" } },
+      },
+    },
+  },
+})
 
-local progress = vim.defaulttable()
+vim.lsp.config("yamlls", {
+  cmd = { "yaml-language-server", "--stdio" },
+  filetypes = FILETYPES.yaml,
+  settings = {
+    yaml = {
+      redhat = {
+        telemetry = {
+          enabled = false,
+        },
+      },
+      schemas = {
+        {
+          url = "https://www.schemastore.org/pnpm-workspace.json",
+          fileMatch = { "pnpm-workspace.yaml" },
+        },
+        {
+          url = "https://www.schemastore.org/github-workflow.json",
+          fileMatch = { ".github/workflows/*.yaml", ".github/workflows/*.yml" },
+        },
+      },
+    },
+  },
+})
 
-vim.api.nvim_create_autocmd("LspProgress", {
-  callback = function(event)
-    local client = vim.lsp.get_client_by_id(event.data.client_id)
-    local value = event.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
-    if not client or type(value) ~= "table" then return end
-    local p = progress[client.id]
+vim.lsp.config("nixd", {
+  cmd = { "nixd" },
+  filetypes = { "nix" },
+  root_markers = {
+    ".git/",
+    "flake.lock",
+  },
+})
 
-    for i = 1, #p + 1 do
-      if i == #p + 1 or p[i].token == event.data.params.token then
-        p[i] = {
-          token = event.data.params.token,
-          msg = ("[%3d%%] %s%s"):format(
-            value.kind == "end" and 100 or value.percentage or 100,
-            value.title or "",
-            value.message and (" **%s**"):format(value.message) or ""
-          ),
-          done = value.kind == "end",
-        }
-        break
+vim.lsp.config("lua_ls", {
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  on_init = function(client)
+    if client.workspace_folders then
+      local path = client.workspace_folders[1].name
+      if
+        path ~= vim.fn.stdpath "config"
+        and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
+      then
+        return
       end
     end
 
-    local msg = {} ---@type string[]
-    progress[client.id] = vim.tbl_filter(
-      function(v) return table.insert(msg, v.msg) or not v.done end,
-      p
-    )
-
-    local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-    vim.notify(table.concat(msg, "\n"), vim.log.levels.INFO, {
-      id = "lsp_progress",
-      title = client.name,
-      opts = function(notif)
-        notif.icon = #progress[client.id] == 0 and " "
-          or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-      end,
+    client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+      runtime = {
+        version = "LuaJIT",
+        path = {
+          "lua/?.lua",
+          "lua/?/init.lua",
+        },
+      },
+      workspace = {
+        checkThirdParty = false,
+        library = {
+          vim.env.VIMRUNTIME,
+        },
+      },
     })
   end,
 })
+
+local lsp = vim.lsp
+
+local eslint_config_files = {}
+
+vim.lsp.config("eslint", {
+  cmd = { "vscode-eslint-language-server", "--stdio" },
+  filetypes = FILETYPES.javascriptLike,
+  settings = {
+    nodePath = "",
+    experimental = {
+      useFlatConfig = true,
+    },
+  },
+  workspace_required = true,
+  root_markers = {
+    {
+      ".eslintrc",
+      ".eslintrc.js",
+      ".eslintrc.cjs",
+      ".eslintrc.yaml",
+      ".eslintrc.yml",
+      ".eslintrc.json",
+      "eslint.config.js",
+      "eslint.config.mjs",
+      "eslint.config.cjs",
+      "eslint.config.ts",
+      "eslint.config.mts",
+      "eslint.config.cts",
+    },
+    { ".git/", "package.json" },
+  },
+})
+
+vim.lsp.enable "ts_ls"
+vim.lsp.enable "jsonls"
+vim.lsp.enable "yamlls"
+vim.lsp.enable "nixd"
+vim.lsp.enable "lua_ls"
+vim.lsp.enable "eslint"
