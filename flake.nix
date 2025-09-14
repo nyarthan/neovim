@@ -68,7 +68,6 @@
                 vimPlugins.colorful-menu-nvim
                 vimPlugins.crates-nvim
                 vimPlugins.lazy-nvim
-                vimPlugins.lazydev-nvim
                 vimPlugins.mini-bracketed
                 vimPlugins.mini-diff
                 vimPlugins.mini-files
