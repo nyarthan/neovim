@@ -82,7 +82,6 @@
                 vimPlugins.mini-starter
                 vimPlugins.mini-statusline
                 vimPlugins.mini-surround
-                vimPlugins.nvim-lspconfig
                 vimPlugins.nvim-notify
                 vimPlugins.nvim-treesitter.withAllGrammars
                 vimPlugins.nvim-ts-autotag

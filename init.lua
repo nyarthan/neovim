@@ -10,6 +10,8 @@ require "custom.core.providers"
 require "custom.core.options"
 require "custom.core.keymaps"
 
+require "custom.core.lsp"
+
 local lazyCat = require "nixCatsUtils.lazyCat"
 
 lazyCat.setup(nixCats.pawsible { "allPlugins", "start", "lazy.nvim" }, {
