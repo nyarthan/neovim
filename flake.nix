@@ -7,16 +7,12 @@
 
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
-    fff-nvim.url = "github:dmtrKovalenko/fff.nvim";
-    fff-nvim.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
     {
       nixpkgs,
       nixCats,
-      fff-nvim,
       ...
     }@inputs:
     let
@@ -87,12 +83,12 @@
                 vimPlugins.mini-starter
                 vimPlugins.mini-statusline
                 vimPlugins.mini-surround
+                vimPlugins.nvim-lspconfig
                 vimPlugins.nvim-notify
                 vimPlugins.nvim-treesitter.withAllGrammars
                 vimPlugins.nvim-ts-autotag
                 vimPlugins.nvim-ts-context-commentstring
-		pkgs.fff-nvim
-                # vimPlugins.rustaceanvim
+		vimPlugins.fff-nvim
                 vimPlugins.snacks-nvim
                 vimPlugins.trouble-nvim
                 (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
@@ -130,7 +126,7 @@
             ;
         } categoryDefinitions packageDefinitions;
         defaultPackage = nixCatsBuilder defaultPackageName;
-        pkgs = import nixpkgs { inherit system; overlays = import ./nix/overlays.nix {inherit fff-nvim;}; };
+        pkgs = import nixpkgs { inherit system; overlays = import ./nix/overlays.nix {}; };
       in
       {
         packages = utils.mkAllWithDefault defaultPackage;

@@ -121,38 +121,34 @@ vim.lsp.config("lua_ls", {
   }
 })
 
-local lsp = vim.lsp
-
-local eslint_config_files = {}
-
-vim.lsp.config("eslint", {
-  cmd = { "vscode-eslint-language-server", "--stdio" },
-  filetypes = FILETYPES.javascriptLike,
-  settings = {
-    nodePath = "",
-    experimental = {
-      useFlatConfig = true,
-    },
-  },
-  workspace_required = true,
-  root_markers = {
-    {
-      ".eslintrc",
-      ".eslintrc.js",
-      ".eslintrc.cjs",
-      ".eslintrc.yaml",
-      ".eslintrc.yml",
-      ".eslintrc.json",
-      "eslint.config.js",
-      "eslint.config.mjs",
-      "eslint.config.cjs",
-      "eslint.config.ts",
-      "eslint.config.mts",
-      "eslint.config.cts",
-    },
-    { ".git/", "package.json" },
-  },
-})
+-- vim.lsp.config("eslint", {
+--   cmd = { "vscode-eslint-language-server", "--stdio" },
+--   filetypes = FILETYPES.javascriptLike,
+--   settings = {
+--     nodePath = "",
+--     experimental = {
+--       useFlatConfig = true,
+--     },
+--   },
+--   workspace_required = true,
+--   root_markers = {
+--     {
+--       ".eslintrc",
+--       ".eslintrc.js",
+--       ".eslintrc.cjs",
+--       ".eslintrc.yaml",
+--       ".eslintrc.yml",
+--       ".eslintrc.json",
+--       "eslint.config.js",
+--       "eslint.config.mjs",
+--       "eslint.config.cjs",
+--       "eslint.config.ts",
+--       "eslint.config.mts",
+--       "eslint.config.cts",
+--     },
+--     { ".git/", "package.json" },
+--   },
+-- })
 
 vim.lsp.enable "ts_ls"
 vim.lsp.enable "jsonls"
