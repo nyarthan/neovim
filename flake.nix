@@ -89,7 +89,6 @@
                 vimPlugins.nvim-treesitter.withAllGrammars
                 vimPlugins.nvim-ts-autotag
                 vimPlugins.nvim-ts-context-commentstring
-		vimPlugins.fff-nvim
                 vimPlugins.snacks-nvim
                 vimPlugins.trouble-nvim
                 (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
