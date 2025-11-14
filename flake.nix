@@ -56,6 +56,7 @@
               pkgs.nixfmt-rfc-style
               pkgs.vue-language-server
               pkgs.deno
+             (pkgs.callPackage ./nix/packages/kotlin-lsp.nix { })
             ];
           };
 

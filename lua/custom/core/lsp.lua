@@ -20,6 +20,9 @@ local FILETYPES = {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
+capabilities.textDocument.formatting = false
+capabilities.textDocument.rangeFormatting = true
+
 vim.lsp.config("*", {
   capabilities = capabilities,
   init_options = { hostInfo = "neovim" },
@@ -117,42 +120,59 @@ vim.lsp.config("lua_ls", {
     })
   end,
   settings = {
-	  Lua = {}
-  }
+    Lua = {},
+  },
 })
 
--- vim.lsp.config("eslint", {
---   cmd = { "vscode-eslint-language-server", "--stdio" },
---   filetypes = FILETYPES.javascriptLike,
---   settings = {
---     nodePath = "",
---     experimental = {
---       useFlatConfig = true,
---     },
---   },
---   workspace_required = true,
---   root_markers = {
---     {
---       ".eslintrc",
---       ".eslintrc.js",
---       ".eslintrc.cjs",
---       ".eslintrc.yaml",
---       ".eslintrc.yml",
---       ".eslintrc.json",
---       "eslint.config.js",
---       "eslint.config.mjs",
---       "eslint.config.cjs",
---       "eslint.config.ts",
---       "eslint.config.mts",
---       "eslint.config.cts",
---     },
---     { ".git/", "package.json" },
---   },
--- })
+local efm_prettier = {
+  formatCanRange = true,
+  formatCommand = "./node_modules/.bin/prettier --stdin --stdin-filepath '${INPUT}' ${--range-start:charStart} ${--range-end:charEnd} --config-precedence prefer-file",
+  formatStdin = true,
+  rootMarkers = {
+    ".prettierrc",
+    ".prettierrc.json",
+    ".prettierrc.js",
+    ".prettierrc.yml",
+    ".prettierrc.yaml",
+    ".prettierrc.json5",
+    ".prettierrc.mjs",
+    ".prettierrc.cjs",
+    ".prettierrc.toml",
+    "prettier.config.js",
+    "prettier.config.cjs",
+    "prettier.config.mjs",
+  },
+}
 
-vim.lsp.enable "ts_ls"
-vim.lsp.enable "jsonls"
-vim.lsp.enable "yamlls"
-vim.lsp.enable "nixd"
-vim.lsp.enable "lua_ls"
+local efm_capabilities = vim.deepcopy(capabilities)
+efm_capabilities.textDocument.formatting = true
+efm_capabilities.textDocument.rangeFormatting = true
+
+vim.lsp.config("efm", {
+  filetypes = {"typescript", "typescriptreact"},
+  capabilities = efm_capabilities,
+  initi_options = {
+    documentFormatting = true,
+    documentRangeFormatting = true,
+  },
+  settings = {
+    rootMarkers = { ".git/" },
+    languages = {
+      javascript = { efm_prettier },
+      javascriptreact = { efm_prettier },
+      ["javascript.jsx"] = { efm_prettier },
+      typescript = { efm_prettier },
+      typescriptreact = { efm_prettier },
+      ["typescripot.jsx"] = { efm_prettier },
+    },
+  },
+})
+
+vim.lsp.enable "efm"
 vim.lsp.enable "eslint"
+vim.lsp.enable "jsonls"
+vim.lsp.enable "kotlin_lsp"
+vim.lsp.enable "lua_ls"
+vim.lsp.enable "nixd"
+vim.lsp.enable "ts_ls"
+vim.lsp.enable "yamlls"

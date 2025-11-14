@@ -34,7 +34,6 @@ pkgs.stdenv.mkDerivation {
 
     cp ${pkgs.neovim}/bin/nvim $out/bin/nvim
     cp -r ${../../nvim}/* $out/config/${nvimAppName}/
-    cp -r ${../../efm-langserver} $out/config/efm-langserver
 
     wrapProgram $out/bin/nvim \
       --prefix PATH : ${lib.makeBinPath extraDependencies} \
