@@ -159,7 +159,7 @@ vim.lsp.config("ts_ls", {
       },
     },
   },
-  filetypes = { unpack(FILETYPES.javascriptLike), "vue" },
+  filetypes = { "vue", unpack(FILETYPES.javascriptLike) },
 })
 
 vim.lsp.config("efm", {
