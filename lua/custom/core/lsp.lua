@@ -148,8 +148,22 @@ local efm_capabilities = vim.deepcopy(capabilities)
 efm_capabilities.textDocument.formatting = true
 efm_capabilities.textDocument.rangeFormatting = true
 
+vim.lsp.config("ts_ls", {
+  init_options = {
+    plugins = {
+      {
+        name = "@vue/typescript-plugin",
+        -- TODO: pass location from nix
+        location = "/nix/store/582wpl6ml9rin36ilzzi4srahmf9c3kq-vue-language-server-2.2.8/lib/node_modules/@vue/language-server",
+        languages = { "vue" },
+      },
+    },
+  },
+  filetypes = { table.unpack(FILETYPES.javascriptLike), "vue" },
+})
+
 vim.lsp.config("efm", {
-  filetypes = {"typescript", "typescriptreact"},
+  filetypes = { "typescript", "typescriptreact" },
   capabilities = efm_capabilities,
   initi_options = {
     documentFormatting = true,
@@ -175,4 +189,5 @@ vim.lsp.enable "kotlin_lsp"
 vim.lsp.enable "lua_ls"
 vim.lsp.enable "nixd"
 vim.lsp.enable "ts_ls"
+vim.lsp.enable "vue_ls"
 vim.lsp.enable "yamlls"
