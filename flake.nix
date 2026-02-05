@@ -53,7 +53,7 @@
               pkgs.rust-analyzer
               pkgs.tailwindcss-language-server
               pkgs.vscode-langservers-extracted # html / css /json / eslint
-              pkgs.nixfmt-rfc-style
+              pkgs.nixfmt
               pkgs.vue-language-server
               pkgs.deno
              (pkgs.callPackage ./nix/packages/kotlin-lsp.nix { })
@@ -105,7 +105,7 @@
               suffix-LD = true;
               wrapRc = true;
               aliases = [ "vim" ];
-              neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+              neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
             };
             categories = {
               general = true;
