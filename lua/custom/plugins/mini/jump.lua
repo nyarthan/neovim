@@ -17,7 +17,6 @@ for _, op in ipairs(ops) do
 end
 
 return {
-  "echasnovski/mini.jump",
-  opts = opts,
+  config = function() require("mini.jump").setup(opts) end,
   keys = keys,
 }

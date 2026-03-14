@@ -34,8 +34,6 @@ for _, key in ipairs(keys) do
 end
 
 return {
-  "echasnovski/mini.diff",
-  event = "BufEnter",
-  opts = opts,
+  config = function() require("mini.diff").setup(opts) end,
   keys = keys_spec,
 }

@@ -1,10 +1,8 @@
 return {
-  "echasnovski/mini.statusline",
-  lazy = false,
-  opts = function()
+  config = function()
     local statusline = require "mini.statusline"
 
-    return {
+    require("mini.statusline").setup {
       content = {
         active = function()
           local mode, mode_hl = statusline.section_mode { trunc_width = 120 }

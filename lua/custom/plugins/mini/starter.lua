@@ -1,9 +1,8 @@
 return {
-  "echasnovski/mini.starter",
-  lazy = false,
-  opts = {
-    -- font: DOS Rebel
-    header = [[
+  config = function()
+    require("mini.starter").setup {
+      -- font: DOS Rebel
+      header = [[
                                            ███                 
                                           ░░░                  
  ████████    ██████   ██████  █████ █████ ████  █████████████  
@@ -16,5 +15,6 @@ return {
                                                                
                                                                
 		]],
-  },
+    }
+  end,
 }

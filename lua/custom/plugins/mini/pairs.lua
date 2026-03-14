@@ -1,6 +1,5 @@
 return {
-  "echasnovski/mini.pairs",
-  config = true,
+  config = function() require("mini.pairs").setup {} end,
   keys = {
     { "(", mode = "i" },
     { "[", mode = "i" },

@@ -37,7 +37,6 @@ for _, op in ipairs(ops) do
 end
 
 return {
-  "echasnovski/mini.bracketed",
-  opts = opts,
+  config = function() require("mini.bracketed").setup(opts) end,
   keys = keys,
 }

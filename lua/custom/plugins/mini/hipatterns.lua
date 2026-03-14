@@ -1,6 +1,4 @@
 return {
-  "echasnovski/mini.hipatterns",
-  event = "BufEnter",
   config = function()
     local hipatterns = require "mini.hipatterns"
     hipatterns.setup {

@@ -1,7 +1,5 @@
 return {
-  "echasnovski/mini.indentscope",
-  event = "BufEnter",
-  opts = function()
+  config = function()
     local indentscope = require "mini.indentscope"
     return {
       draw = {

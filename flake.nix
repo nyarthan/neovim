@@ -71,19 +71,7 @@
                 vimPlugins.colorful-menu-nvim
                 vimPlugins.crates-nvim
                 vimPlugins.lazy-nvim
-                vimPlugins.mini-bracketed
-                vimPlugins.mini-diff
-                vimPlugins.mini-files
-                vimPlugins.mini-hipatterns
-                vimPlugins.mini-icons
-                vimPlugins.mini-indentscope
-                vimPlugins.mini-jump
-                vimPlugins.mini-move
-                vimPlugins.mini-pairs
-                vimPlugins.mini-sessions
-                vimPlugins.mini-starter
-                vimPlugins.mini-statusline
-                vimPlugins.mini-surround
+                vimPlugins.mini-nvim
                 vimPlugins.nvim-lspconfig
                 vimPlugins.nvim-notify
                 vimPlugins.nvim-treesitter.withAllGrammars

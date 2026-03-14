@@ -9,9 +9,14 @@ local keys = {
   { "sn", op = "update_n_lines", desc = "Update `n_lines`", mode = { "n" } },
 }
 
+local keys_spec = {}
+
+for _, key in ipairs(keys) do
+  table.insert(keys_spec, { key[1], desc = key.desc, mode = key.mode })
+end
+
 return {
-  "echasnovski/mini.surround",
-  opts = function()
+  config = function()
     local opts = {
       mappings = {},
     }
@@ -20,15 +25,7 @@ return {
       opts.mappings[key.op] = key[1]
     end
 
-    return opts
+    require("mini.surround").setup(opts)
   end,
-  keys = function()
-    local keys_spec = {}
-
-    for _, key in ipairs(keys) do
-      table.insert(keys_spec, { key[1], desc = key.desc, mode = key.mode })
-    end
-
-    return keys_spec
-  end,
+  keys = keys_spec,
 }
