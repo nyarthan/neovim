@@ -24,6 +24,11 @@ return {
         show_with_menu = true,
         show_without_menu = true,
       },
+      accept = {
+        auto_brackets = {
+          enabled = false,
+        },
+      },
       menu = {
         draw = {
           columns = { { "kind_icon" }, { "label", gap = 1 }, { "label_description" } },
@@ -38,13 +43,13 @@ return {
                 return hl
               end,
             },
-              label = {
-                text = function(ctx) return require("colorful-menu").blink_components_text(ctx) end,
-                highlight = function(ctx)
-                  return require("colorful-menu").blink_components_highlight(ctx)
-                end,
-              },
+            label = {
+              text = function(ctx) return require("colorful-menu").blink_components_text(ctx) end,
+              highlight = function(ctx)
+                return require("colorful-menu").blink_components_highlight(ctx)
+              end,
             },
+          },
         },
       },
     },

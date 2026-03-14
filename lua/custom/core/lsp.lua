@@ -1,22 +1,3 @@
-local FILETYPES = {
-  javascriptLike = {
-    "javascript",
-    "javascriptReact",
-    "javascript.jsx",
-    "typescript",
-    "typescriptreact",
-    "typescript.jsx",
-  },
-  jsonLike = {
-    "json",
-    "jsonc",
-  },
-  yaml = {
-    "yaml",
-    "yml",
-  },
-}
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
@@ -31,26 +12,18 @@ vim.lsp.config("*", {
   },
 })
 
-vim.lsp.config("ts_ls", {
-  cmd = { "typescript-language-server", "--stdio" },
-  filetypes = FILETYPES.javascriptLike,
-  root_markers = {
-    ".git/",
-    "pnpm-lock.yaml",
-    "yarn.lock",
-    "deno.lock",
-    "bun.lock",
-    "bun.lockb",
-  },
-})
-
 vim.lsp.config("jsonls", {
   cmd = { "vscode-json-language-server", "--stdio" },
-  filetypes = FILETYPES.jsonLike,
+  filetypes = { "json", "jsonc" },
   settings = {
     json = {
       schemas = {
         { url = "https://www.schemastore.org/package.json", fileMatch = { "package.json" } },
+        {
+          url = "https://www.schemastore.org/tsconfig.json",
+          fileMatch = { "tsconfig.json", "tsconfig.*.json" },
+        },
+        { url = "https://turborepo.dev/schema.json", fileMatch = { "turbo.json", "turbo.jsonc" } },
       },
     },
   },
@@ -58,7 +31,7 @@ vim.lsp.config("jsonls", {
 
 vim.lsp.config("yamlls", {
   cmd = { "yaml-language-server", "--stdio" },
-  filetypes = FILETYPES.yaml,
+  filetypes = { "yaml", "yml" },
   settings = {
     yaml = {
       redhat = {
@@ -124,70 +97,10 @@ vim.lsp.config("lua_ls", {
   },
 })
 
-local efm_prettier = {
-  formatCanRange = true,
-  formatCommand = "./node_modules/.bin/prettier --stdin --stdin-filepath '${INPUT}' ${--range-start:charStart} ${--range-end:charEnd} --config-precedence prefer-file",
-  formatStdin = true,
-  rootMarkers = {
-    ".prettierrc",
-    ".prettierrc.json",
-    ".prettierrc.js",
-    ".prettierrc.yml",
-    ".prettierrc.yaml",
-    ".prettierrc.json5",
-    ".prettierrc.mjs",
-    ".prettierrc.cjs",
-    ".prettierrc.toml",
-    "prettier.config.js",
-    "prettier.config.cjs",
-    "prettier.config.mjs",
-  },
-}
-
-local efm_capabilities = vim.deepcopy(capabilities)
-efm_capabilities.textDocument.formatting = true
-efm_capabilities.textDocument.rangeFormatting = true
-
-vim.lsp.config("ts_ls", {
-  init_options = {
-    plugins = {
-      {
-        name = "@vue/typescript-plugin",
-        -- TODO: pass location from nix
-        location = "/nix/store/582wpl6ml9rin36ilzzi4srahmf9c3kq-vue-language-server-2.2.8/lib/node_modules/@vue/language-server",
-        languages = { "vue" },
-      },
-    },
-  },
-  filetypes = { "vue", unpack(FILETYPES.javascriptLike) },
-})
-
-vim.lsp.config("efm", {
-  filetypes = { "typescript", "typescriptreact" },
-  capabilities = efm_capabilities,
-  initi_options = {
-    documentFormatting = true,
-    documentRangeFormatting = true,
-  },
-  settings = {
-    rootMarkers = { ".git/" },
-    languages = {
-      javascript = { efm_prettier },
-      javascriptreact = { efm_prettier },
-      ["javascript.jsx"] = { efm_prettier },
-      typescript = { efm_prettier },
-      typescriptreact = { efm_prettier },
-      ["typescripot.jsx"] = { efm_prettier },
-    },
-  },
-})
-
-vim.lsp.enable "efm"
 vim.lsp.enable "eslint"
 vim.lsp.enable "jsonls"
 vim.lsp.enable "kotlin_lsp"
 vim.lsp.enable "lua_ls"
 vim.lsp.enable "nixd"
-vim.lsp.enable "ts_ls"
 vim.lsp.enable "vue_ls"
 vim.lsp.enable "yamlls"

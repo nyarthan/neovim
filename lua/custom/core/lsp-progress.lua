@@ -1,4 +1,3 @@
-
 local progress = vim.defaulttable()
 
 vim.api.nvim_create_autocmd("LspProgress", {

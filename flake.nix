@@ -38,24 +38,24 @@
         {
           lspsAndRuntimeDeps = {
             general = [
-              pkgs.universal-ctags
-              pkgs.ripgrep
+              pkgs.deno
+              pkgs.efm-langserver
               pkgs.fd
-              pkgs.stdenv.cc.cc
+              pkgs.lua-language-server
               pkgs.nix-doc
               pkgs.nixd
-              pkgs.stylua
-              pkgs.lua-language-server
-              pkgs.efm-langserver
-              pkgs.typescript-language-server
-              pkgs.yaml-language-server
-              pkgs.taplo
-              pkgs.rust-analyzer
-              pkgs.tailwindcss-language-server
-              pkgs.vscode-langservers-extracted # html / css /json / eslint
               pkgs.nixfmt
+              pkgs.ripgrep
+              pkgs.rust-analyzer
+              pkgs.stdenv.cc.cc
+              pkgs.stylua
+              pkgs.tailwindcss-language-server
+              pkgs.taplo
+              pkgs.typescript-language-server
+              pkgs.universal-ctags
+              pkgs.vscode-langservers-extracted # html / css /json / eslint
               pkgs.vue-language-server
-              pkgs.deno
+              pkgs.yaml-language-server
              (pkgs.callPackage ./nix/packages/kotlin-lsp.nix { })
             ];
           };
@@ -91,6 +91,7 @@
                 vimPlugins.nvim-ts-context-commentstring
                 vimPlugins.snacks-nvim
                 vimPlugins.trouble-nvim
+                vimPlugins.typescript-tools-nvim
                 (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
               ];
             };
