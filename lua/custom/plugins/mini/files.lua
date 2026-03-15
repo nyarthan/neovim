@@ -4,6 +4,7 @@ return {
     files.setup {
       windows = { preview = true },
     }
+    _G.MiniFiles = files
 
     vim.api.nvim_create_autocmd("User", {
       pattern = "MiniFilesActionRename",
@@ -13,7 +14,7 @@ return {
     vim.keymap.set(
       "n",
       "<leader>e",
-      function() MiniFiles.open(vim.api.nvim_buf_get_name(0)) end,
+      function() _G.MiniFiles.open(vim.api.nvim_buf_get_name(0)) end,
       { desc = "Open File [E]xplorer" }
     )
   end,

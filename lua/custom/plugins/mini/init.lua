@@ -7,10 +7,27 @@ local indentscope = require "custom.plugins.mini.indentscope"
 local jump = require "custom.plugins.mini.jump"
 local move = require "custom.plugins.mini.move"
 local pairs = require "custom.plugins.mini.pairs"
+local pick = require "custom.plugins.mini.pick"
 local sessions = require "custom.plugins.mini.sessions"
 local starter = require "custom.plugins.mini.starter"
 local statusline = require "custom.plugins.mini.statusline"
 local surround = require "custom.plugins.mini.surround"
+
+local all_keys = {}
+
+for _, t in ipairs {
+  bracketed.keys,
+  diff.keys,
+  jump.keys,
+  move.keys,
+  pairs.keys,
+  pick.keys,
+  surround.keys,
+} do
+  for _, v in ipairs(t) do
+    table.insert(all_keys, v)
+  end
+end
 
 return {
   "nvim-mini/mini.nvim",
@@ -25,17 +42,11 @@ return {
     jump.config()
     move.config()
     pairs.config()
+    pick.config()
     sessions.config()
     starter.config()
     statusline.config()
     surround.config()
   end,
-  keys = {
-    unpack(bracketed.keys),
-    unpack(diff.keys),
-    unpack(jump.keys),
-    unpack(move.keys),
-    unpack(pairs.keys),
-    unpack(surround.keys),
-  },
+  keys = all_keys,
 }
