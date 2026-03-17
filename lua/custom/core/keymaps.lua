@@ -15,3 +15,5 @@ nmap("<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 nmap("<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 nmap("<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 nmap("<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+
+nmap("gd", function() vim.lsp.buf.definition() end, {desc = "[G]o to [D]efinition"})

@@ -56,7 +56,7 @@
               pkgs.vscode-langservers-extracted # html / css /json / eslint
               pkgs.vue-language-server
               pkgs.yaml-language-server
-             (pkgs.callPackage ./nix/packages/kotlin-lsp.nix { })
+             # (pkgs.callPackage ./nix/packages/kotlin-lsp.nix { })
             ];
           };
 
