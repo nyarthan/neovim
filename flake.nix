@@ -68,10 +68,6 @@
         pkgs.wrapNeovimUnstable neovim-unwrapped {
           plugins = with pkgs.vimPlugins; [
             {
-              plugin = base16-nvim;
-              optional = false;
-            }
-            {
               plugin = conform-nvim;
               optional = false;
             }

@@ -1,4 +1,32 @@
-vim.cmd "colorscheme base16-ayu-dark"
+require("mini.base16").setup {
+  palette = {
+    base00 = "#080808",
+    base01 = "#141414",
+    base02 = "#1C1C1C",
+    base03 = "#505050",
+    base04 = "#A0A0A0",
+    base05 = "#EDE5DB",
+    base06 = "#F2ECE4",
+    base07 = "#F7F2EC",
+    base08 = "#FF8080",
+    base09 = "#FFC799",
+    base0A = "#FFC799",
+    base0B = "#99FFE4",
+    base0C = "#A0A0A0",
+    base0D = "#FFC799",
+    base0E = "#A0A0A0",
+    base0F = "#FF8080",
+  },
+}
+
+-- Vesper-style overrides: variables and identifiers stay white
+local hi = vim.api.nvim_set_hl
+hi(0, "@variable", { fg = "#EDE5DB" })
+hi(0, "@property", { fg = "#EDE5DB" })
+hi(0, "@variable.parameter", { fg = "#EDE5DB" })
+hi(0, "@variable.member", { fg = "#EDE5DB" })
+hi(0, "@tag", { fg = "#FFC799" })
+hi(0, "@tag.attribute", { fg = "#FFC799" })
 
 require("mini.icons").setup()
 
