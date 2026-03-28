@@ -3,150 +3,131 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
-    nixCats.url = "github:BirdeeHub/nixCats-nvim";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
 
   outputs =
     {
       nixpkgs,
-      nixCats,
+      neovim-nightly-overlay,
       ...
-    }@inputs:
+    }:
     let
-      inherit (nixCats) utils;
-      luaPath = ./.;
-      forEachSystem = utils.eachSystem nixpkgs.lib.platforms.all;
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+        "aarch64-linux"
+      ];
+      forEachSystem = nixpkgs.lib.genAttrs systems;
 
-      extra_pkg_config = {
-        allowUnfree = false;
-      };
+      pkgsFor = system: import nixpkgs { inherit system; };
 
-      # dependencyOverlays = [
-      #   (utils.standardPluginOverlay inputs)
-      # ];
+      nvimFor =
+        system:
+        let
+          pkgs = pkgsFor system;
+          neovim-unwrapped = neovim-nightly-overlay.packages.${system}.neovim;
 
-      dependencyOverlays = import ./nix/overlays.nix inputs;
+          tsgo = pkgs.typescript-go.overrideAttrs (_: {
+            src = pkgs.fetchFromGitHub {
+              owner = "microsoft";
+              repo = "typescript-go";
+              rev = "98545e9a34274cb61b4b521b8f49336e1ddff08a";
+              hash = "sha256-IvR7zHSl7kUmamQkGGrzdKJrdypnQe2a0X1YUyRYYTU=";
+              fetchSubmodules = false;
+            };
+          });
 
-      categoryDefinitions =
-        {
-          pkgs,
-          ...
-        }:
-        {
-          lspsAndRuntimeDeps = {
-            general = [
-              pkgs.deno
-              pkgs.efm-langserver
-              pkgs.fd
-              pkgs.lua-language-server
-              pkgs.nix-doc
-              pkgs.nixd
-              pkgs.nixfmt
-              pkgs.ripgrep
-              pkgs.rust-analyzer
-              pkgs.stdenv.cc.cc
-              pkgs.stylua
-              pkgs.tailwindcss-language-server
-              pkgs.taplo
-              (pkgs.typescript-go.overrideAttrs (
-                final: prev: {
-                  src = pkgs.fetchFromGitHub {
-                    owner = "microsoft";
-                    repo = "typescript-go";
-                    rev = "98545e9a34274cb61b4b521b8f49336e1ddff08a";
-                    hash = "sha256-IvR7zHSl7kUmamQkGGrzdKJrdypnQe2a0X1YUyRYYTU=";
-                    fetchSubmodules = false;
-                  };
-                }
-              ))
-              pkgs.universal-ctags
-              pkgs.vscode-langservers-extracted # html / css /json / eslint
-              pkgs.vue-language-server
-              pkgs.yaml-language-server
-              # (pkgs.callPackage ./nix/packages/kotlin-lsp.nix { })
-            ];
-          };
+          runtimeDeps = with pkgs; [
+            deno
+            fd
+            lua-language-server
+            nix-doc
+            nixd
+            nixfmt
+            ripgrep
+            rust-analyzer
+            stdenv.cc.cc
+            stylua
+            tailwindcss-language-server
+            taplo
+            tsgo
+            universal-ctags
+            vscode-langservers-extracted
+            vue-language-server
+            yaml-language-server
+          ];
 
-          startupPlugins =
-            let
-              inherit (pkgs) vimPlugins;
-            in
+          luaConfig = pkgs.runCommand "nvim-lua-config" { } ''
+            mkdir -p $out/lua
+            cp ${./init.lua} $out/init.lua
+            cp -r ${./lua}/. $out/lua/
+          '';
+        in
+        pkgs.wrapNeovimUnstable neovim-unwrapped {
+          plugins = with pkgs.vimPlugins; [
             {
-              general = [
-                vimPlugins.base16-nvim
-                vimPlugins.blink-cmp
-                vimPlugins.colorful-menu-nvim
-                vimPlugins.crates-nvim
-                vimPlugins.lazy-nvim
-                vimPlugins.mini-nvim
-                vimPlugins.nvim-lspconfig
-                vimPlugins.nvim-notify
-                vimPlugins.nvim-treesitter.withAllGrammars
-                vimPlugins.nvim-ts-autotag
-                vimPlugins.nvim-ts-context-commentstring
-                vimPlugins.snacks-nvim
-                vimPlugins.trouble-nvim
-                (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
-              ];
-            };
+              plugin = base16-nvim;
+              optional = false;
+            }
+            {
+              plugin = conform-nvim;
+              optional = false;
+            }
+            {
+              plugin = mini-nvim;
+              optional = false;
+            }
+            {
+              plugin = nvim-treesitter.withAllGrammars;
+              optional = false;
+            }
+            {
+              plugin = nvim-ts-autotag;
+              optional = false;
+            }
+            {
+              plugin = nvim-ts-context-commentstring;
+              optional = false;
+            }
+            {
+              plugin = snacks-nvim;
+              optional = false;
+            }
+            {
+              plugin = trouble-nvim;
+              optional = false;
+            }
+          ];
+          withNodeJs = false;
+          withRuby = false;
+          withPython3 = false;
+          vimAlias = true;
+          luaRcContent = ''
+            vim.opt.rtp:prepend("${luaConfig}")
+            vim.cmd.packloadall()
+            dofile("${luaConfig}/init.lua")
+          '';
+          wrapperArgs = [
+            "--prefix"
+            "PATH"
+            ":"
+            "${pkgs.lib.makeBinPath runtimeDeps}"
+          ];
         };
-
-      packageDefinitions = {
-        nvim =
-          { pkgs, ... }:
-          {
-            settings = {
-              suffix-path = true;
-              suffix-LD = true;
-              wrapRc = true;
-              aliases = [ "vim" ];
-              neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
-            };
-            categories = {
-              general = true;
-            };
-          };
-      };
-      defaultPackageName = "nvim";
     in
-    forEachSystem (
-      system:
-      let
-        nixCatsBuilder = utils.baseBuilder luaPath {
-          inherit
-            nixpkgs
-            system
-            dependencyOverlays
-            extra_pkg_config
-            ;
-        } categoryDefinitions packageDefinitions;
-        defaultPackage = nixCatsBuilder defaultPackageName;
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = import ./nix/overlays.nix { };
-        };
-      in
-      {
-        packages = utils.mkAllWithDefault defaultPackage;
+    {
+      packages = forEachSystem (system: {
+        default = nvimFor system;
+        nvim = nvimFor system;
+      });
 
-        devShells = {
-          default = pkgs.mkShell {
-            name = defaultPackageName;
-            packages = [ defaultPackage ];
-            inputsFrom = [ ];
-            shellHook = "";
-          };
+      devShells = forEachSystem (system: {
+        default = (pkgsFor system).mkShell {
+          name = "nvim";
+          packages = [ (nvimFor system) ];
         };
-      }
-    )
-    // {
-      overlays = utils.makeOverlays luaPath {
-        inherit nixpkgs dependencyOverlays extra_pkg_config;
-      } categoryDefinitions packageDefinitions defaultPackageName;
-
-      inherit utils;
-      inherit (utils) templates;
+      });
     };
 }
