@@ -1,4 +1,5 @@
 local bracketed = require "custom.plugins.mini.bracketed"
+local completion = require "custom.plugins.mini.completion"
 local diff = require "custom.plugins.mini.diff"
 local files = require "custom.plugins.mini.files"
 local hipatterns = require "custom.plugins.mini.hipatterns"
@@ -34,10 +35,11 @@ return {
   lazy = false,
   config = function()
     bracketed.config()
+    icons.config()
+    completion.config()
     diff.config()
     files.config()
     hipatterns.config()
-    icons.config()
     indentscope.config()
     jump.config()
     move.config()

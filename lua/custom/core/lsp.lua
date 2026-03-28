@@ -1,17 +1,3 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-
-capabilities.textDocument.formatting = nil
-capabilities.textDocument.rangeFormatting = nil
-
-vim.lsp.config("*", {
-  capabilities = capabilities,
-  init_options = { hostInfo = "neovim" },
-  root_markers = {
-    ".git/",
-  },
-})
-
 vim.lsp.config("jsonls", {
   cmd = { "vscode-json-language-server", "--stdio" },
   filetypes = { "json", "jsonc" },
