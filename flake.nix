@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
 
     nixCats.url = "github:BirdeeHub/nixCats-nvim";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -27,7 +26,7 @@
       # dependencyOverlays = [
       #   (utils.standardPluginOverlay inputs)
       # ];
-       
+
       dependencyOverlays = import ./nix/overlays.nix inputs;
 
       categoryDefinitions =
@@ -51,12 +50,22 @@
               pkgs.stylua
               pkgs.tailwindcss-language-server
               pkgs.taplo
-              pkgs.typescript-language-server
+              (pkgs.typescript-go.overrideAttrs (
+                final: prev: {
+                  src = pkgs.fetchFromGitHub {
+                    owner = "microsoft";
+                    repo = "typescript-go";
+                    rev = "98545e9a34274cb61b4b521b8f49336e1ddff08a";
+                    hash = "sha256-IvR7zHSl7kUmamQkGGrzdKJrdypnQe2a0X1YUyRYYTU=";
+                    fetchSubmodules = false;
+                  };
+                }
+              ))
               pkgs.universal-ctags
               pkgs.vscode-langservers-extracted # html / css /json / eslint
               pkgs.vue-language-server
               pkgs.yaml-language-server
-             # (pkgs.callPackage ./nix/packages/kotlin-lsp.nix { })
+              # (pkgs.callPackage ./nix/packages/kotlin-lsp.nix { })
             ];
           };
 
@@ -79,7 +88,6 @@
                 vimPlugins.nvim-ts-context-commentstring
                 vimPlugins.snacks-nvim
                 vimPlugins.trouble-nvim
-                vimPlugins.typescript-tools-nvim
                 (pkgs.callPackage ./nix/packages/nui-nvim.nix { })
               ];
             };
@@ -115,7 +123,10 @@
             ;
         } categoryDefinitions packageDefinitions;
         defaultPackage = nixCatsBuilder defaultPackageName;
-        pkgs = import nixpkgs { inherit system; overlays = import ./nix/overlays.nix {}; };
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = import ./nix/overlays.nix { };
+        };
       in
       {
         packages = utils.mkAllWithDefault defaultPackage;
@@ -125,7 +136,7 @@
             name = defaultPackageName;
             packages = [ defaultPackage ];
             inputsFrom = [ ];
-            shellHook = '''';
+            shellHook = "";
           };
         };
       }

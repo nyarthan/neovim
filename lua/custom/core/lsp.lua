@@ -1,8 +1,8 @@
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
-capabilities.textDocument.formatting = false
-capabilities.textDocument.rangeFormatting = true
+capabilities.textDocument.formatting = nil
+capabilities.textDocument.rangeFormatting = nil
 
 vim.lsp.config("*", {
   capabilities = capabilities,
@@ -97,6 +97,30 @@ vim.lsp.config("lua_ls", {
   },
 })
 
+vim.lsp.config("tsgo", {
+  cmd = { "tsgo", "--lsp", "--stdio" },
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+  },
+  root_dir = function(bufnr, on_dir)
+    local root_markers =
+      { "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb", "bun.lock" }
+    root_markers = vim.fn.has "nvim-0.11.3" == 1 and { root_markers, { ".git" } }
+      or vim.list_extend(root_markers, { ".git" })
+
+    local deno_root = vim.fs.root(bufnr, { "deno.json", "deno.jsonc" })
+    local deno_lock_root = vim.fs.root(bufnr, { "deno.lock" })
+    local project_root = vim.fs.root(bufnr, root_markers)
+    if deno_lock_root and (not project_root or #deno_lock_root > #project_root) then return end
+    if deno_root and (not project_root or #deno_root >= #project_root) then return end
+    on_dir(project_root or vim.fn.getcwd())
+  end,
+})
+
+vim.lsp.enable "tsgo"
 vim.lsp.enable "eslint"
 vim.lsp.enable "jsonls"
 vim.lsp.enable "kotlin_lsp"
