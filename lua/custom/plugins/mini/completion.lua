@@ -5,7 +5,6 @@ return {
     }
 
     local on_attach = function(args)
-      print(vim.inspect(args))
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       client.server_capabilities.semanticTokensProvider = nil
       vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
