@@ -277,3 +277,8 @@ require("conform").setup {
     lsp_format = "fallback",
   },
 }
+
+vim.cmd "packadd justify"
+vim.cmd "packadd nohlsearch"
+vim.cmd "packadd nvim.undotree"
+vim.keymap.set("n", "<lader>u", require("undotree").open)
