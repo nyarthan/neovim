@@ -55,6 +55,10 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
-vim.opt.cmdheight = 0
 vim.o.laststatus = 3
 vim.o.winblend = 0
+
+vim.opt.cmdheight = 0
+require("vim._core.ui2").enable {
+  enable = true,
+}
