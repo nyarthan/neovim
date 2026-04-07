@@ -63,6 +63,7 @@
             mkdir -p $out/lua
             cp ${./init.lua} $out/init.lua
             cp -r ${./lua}/. $out/lua/
+            cp -r ${./lsp} $out/lsp
           '';
         in
         pkgs.wrapNeovimUnstable neovim-unwrapped {
