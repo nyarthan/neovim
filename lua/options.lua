@@ -1,5 +1,3 @@
-local Symbols = require "symbols"
-
 -- Disable standard plugins
 vim.g.editorconfig = false
 vim.g.loaded_gzip = 1
@@ -43,13 +41,13 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.list = true
 vim.opt.listchars = {
-  eol = Symbols.nf.md_keyboard_return,
-  tab = Symbols.nf.md_keyboard_tab,
-  trail = Symbols.unicode.middle_dot,
-  nbsp = Symbols.nf.md_keyboard_space,
+  eol = "󰌑",
+  tab = "󰌒 ",
+  trail = "·",
+  nbsp = "󱁐",
   extends = "<",
   precedes = ">",
-  conceal = Symbols.unicode.light_quadruple_dash_vertical,
+  conceal = "┊",
 }
 vim.opt.inccommand = "split"
 vim.opt.cursorline = true
@@ -59,6 +57,4 @@ vim.o.laststatus = 3
 vim.o.winblend = 0
 
 vim.opt.cmdheight = 0
-require("vim._core.ui2").enable {
-  enable = true,
-}
+require("vim._core.ui2").enable()

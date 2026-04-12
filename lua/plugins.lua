@@ -1,61 +1,4 @@
-require("mini.base16").setup {
-  palette = {
-    base00 = "#080808",
-    base01 = "#141414",
-    base02 = "#1C1C1C",
-    base03 = "#505050",
-    base04 = "#A0A0A0",
-    base05 = "#EDE5DB",
-    base06 = "#F2ECE4",
-    base07 = "#F7F2EC",
-    base08 = "#FF8080",
-    base09 = "#FFC799",
-    base0A = "#FFC799",
-    base0B = "#99FFE4",
-    base0C = "#A0A0A0",
-    base0D = "#FFC799",
-    base0E = "#A0A0A0",
-    base0F = "#FF8080",
-  },
-}
-
--- Vesper-style overrides: variables and identifiers stay white
-local hi = vim.api.nvim_set_hl
-hi(0, "@variable", { fg = "#EDE5DB" })
-hi(0, "@property", { fg = "#EDE5DB" })
-hi(0, "@variable.parameter", { fg = "#EDE5DB" })
-hi(0, "@variable.member", { fg = "#EDE5DB" })
-hi(0, "@tag", { fg = "#FFC799" })
-hi(0, "@tag.attribute", { fg = "#FFC799" })
-
 require("mini.icons").setup()
-
-require("mini.completion").setup {
-  lsp_completion = { source_func = "omnifunc", auto_setup = false },
-}
-
-vim.api.nvim_create_autocmd("LspAttach", {
-  pattern = "*",
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    client.server_capabilities.semanticTokensProvider = nil
-    vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
-  end,
-})
-
-local capabilities = vim.tbl_deep_extend(
-  "force",
-  vim.lsp.protocol.make_client_capabilities(),
-  MiniCompletion.get_lsp_capabilities { resolve_additional_text_edits = false }
-)
-capabilities.textDocument.formatting = nil
-capabilities.textDocument.rangeFormatting = nil
-
-vim.lsp.config("*", {
-  capabilities = capabilities,
-  init_options = { hostInfo = "neovim" },
-  root_markers = { ".git/" },
-})
 
 require("mini.bracketed").setup {
   buffer = { suffix = "b", options = {} },
@@ -247,7 +190,6 @@ end
 require("snacks").setup {
   bigfile = { enabled = true },
   bufdelete = { enabled = true },
-  notifier = { enabled = true },
   quickfile = { enabled = true },
   rename = { enabled = true },
   picker = { enabled = false },
