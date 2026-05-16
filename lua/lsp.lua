@@ -1,22 +1,6 @@
-vim.lsp.enable "eslint"
-vim.lsp.enable "jsonls"
-vim.lsp.enable "lua_ls"
-vim.lsp.enable "nixd"
-vim.lsp.enable "tsgo"
-vim.lsp.enable "yamlls"
-
 require("mini.completion").setup {
   lsp_completion = { source_func = "omnifunc", auto_setup = false },
 }
-
-vim.api.nvim_create_autocmd("LspAttach", {
-  pattern = "*",
-  callback = function(args)
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
-    client.server_capabilities.semanticTokensProvider = nil
-    vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
-  end,
-})
 
 local capabilities = vim.tbl_deep_extend(
   "force",
@@ -31,6 +15,22 @@ vim.lsp.config("*", {
   init_options = { hostInfo = "neovim" },
   root_markers = { ".git/" },
 })
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  pattern = "*",
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    client.server_capabilities.semanticTokensProvider = nil
+    vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
+  end,
+})
+
+vim.lsp.enable "eslint"
+vim.lsp.enable "jsonls"
+vim.lsp.enable "lua_ls"
+vim.lsp.enable "nixd"
+vim.lsp.enable "ts_ls"
+vim.lsp.enable "yamlls"
 
 local progress = vim.defaulttable()
 

@@ -4,12 +4,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    nvim-lspconfig = {
+      url = "github:neovim/nvim-lspconfig";
+      flake = false;
+    };
   };
 
   outputs =
     {
       nixpkgs,
       neovim-nightly-overlay,
+      nvim-lspconfig,
       ...
     }:
     let
@@ -33,8 +38,8 @@
             src = pkgs.fetchFromGitHub {
               owner = "microsoft";
               repo = "typescript-go";
-              rev = "98545e9a34274cb61b4b521b8f49336e1ddff08a";
-              hash = "sha256-IvR7zHSl7kUmamQkGGrzdKJrdypnQe2a0X1YUyRYYTU=";
+              rev = "f4a1d2a1d0d5df4333f2440500e3a6c4b4702d9a";
+              hash = "sha256-LR87VhTPqkCtes5L2yhbrlbKg5PVavNPy620RLwrOB0=";
               fetchSubmodules = false;
             };
           });
@@ -52,7 +57,8 @@
             stylua
             tailwindcss-language-server
             taplo
-            tsgo
+            # tsgo
+	    typescript-language-server
             universal-ctags
             vscode-langservers-extracted
             vue-language-server
@@ -63,7 +69,6 @@
             mkdir -p $out/lua
             cp ${./init.lua} $out/init.lua
             cp -r ${./lua}/. $out/lua/
-            cp -r ${./lsp} $out/lsp
           '';
         in
         pkgs.wrapNeovimUnstable neovim-unwrapped {
@@ -94,6 +99,13 @@
             }
             {
               plugin = trouble-nvim;
+              optional = false;
+            }
+            {
+              plugin = pkgs.vimUtils.buildVimPlugin {
+                name = "nvim-lspconfig";
+                src = nvim-lspconfig;
+              };
               optional = false;
             }
           ];
