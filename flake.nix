@@ -45,20 +45,21 @@
           });
 
           runtimeDeps = with pkgs; [
+            # tsgo
             deno
             fd
             lua-language-server
             nix-doc
             nixd
             nixfmt
+            oxfmt
             ripgrep
             rust-analyzer
             stdenv.cc.cc
             stylua
             tailwindcss-language-server
             taplo
-            # tsgo
-	    typescript-language-server
+            typescript-language-server
             universal-ctags
             vscode-langservers-extracted
             vue-language-server

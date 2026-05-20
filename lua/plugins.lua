@@ -209,10 +209,6 @@ require("conform").setup {
   formatters_by_ft = {
     lua = { "stylua" },
     nix = { "nixfmt" },
-    javascript = { "prettier" },
-    javascriptReact = { "prettier" },
-    typescript = { "prettier" },
-    typescriptReact = { "prettier" },
   },
   format_on_save = {
     timeout_ms = 500,

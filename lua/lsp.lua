@@ -20,6 +20,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
   pattern = "*",
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client.name ~= "oxfmt" then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end
     client.server_capabilities.semanticTokensProvider = nil
     vim.bo[args.buf].omnifunc = "v:lua.MiniCompletion.completefunc_lsp"
   end,
@@ -31,6 +35,7 @@ vim.lsp.enable "lua_ls"
 vim.lsp.enable "nixd"
 vim.lsp.enable "ts_ls"
 vim.lsp.enable "yamlls"
+vim.lsp.enable "oxfmt"
 
 local progress = vim.defaulttable()
 
