@@ -29,6 +29,21 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+-- sqls emits a window/showMessage "no database connection" in the brief window
+-- before Neovim hands it the connection config; it connects fine right after.
+-- Drop that one transient message, pass everything else through.
+vim.lsp.config("sqls", {
+  handlers = {
+    ["window/showMessage"] = function(_, result)
+      if result and result.message and result.message:find "no database connection" then
+        return
+      end
+      local levels = { "ERROR", "WARN", "INFO", "DEBUG" }
+      vim.notify("LSP[sqls] " .. result.message, vim.log.levels[levels[result.type] or "INFO"])
+    end,
+  },
+})
+
 vim.lsp.enable "eslint"
 vim.lsp.enable "jsonls"
 vim.lsp.enable "lua_ls"

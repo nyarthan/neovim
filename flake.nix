@@ -34,6 +34,13 @@
           pkgs = pkgsFor system;
           neovim-unwrapped = neovim-nightly-overlay.packages.${system}.neovim;
 
+          # nixpkgs builds sqls without FTS5, so its SQLite driver can't open
+          # tables created with `USING fts5` and drops the whole connection.
+          # The `sqlite_fts5` build tag compiles FTS5 into mattn/go-sqlite3.
+          sqls-fts5 = pkgs.sqls.overrideAttrs (prev: {
+            tags = (prev.tags or [ ]) ++ [ "sqlite_fts5" ];
+          });
+
           tsgo = pkgs.typescript-go.overrideAttrs (_: {
             src = pkgs.fetchFromGitHub {
               owner = "microsoft";
@@ -56,7 +63,7 @@
             ripgrep
             rust-analyzer
             sql-formatter
-            sqls
+            sqls-fts5
             stdenv.cc.cc
             stylua
             tailwindcss-language-server
