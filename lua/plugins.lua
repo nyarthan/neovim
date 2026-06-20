@@ -206,15 +206,42 @@ require("snacks").setup {
 require("trouble").setup { focus = true }
 
 require("conform").setup {
+  formatters = {
+    oxfmt = {
+      command = "oxfmt",
+      args = { "--stdin-filepath", "$FILENAME" },
+      stdin = true,
+    },
+    sql_formatter = {
+      -- Treat ${...} JS interpolations as params so sql-formatter formats inline
+      prepend_args = {
+        "--config",
+        [==[{"language":"sqlite","paramTypes":{"custom":[{"regex":"\\$\\{[^}]*\\}"}]}}]==],
+      },
+    },
+    injected = {
+      options = { ignore_errors = true },
+    },
+  },
   formatters_by_ft = {
     lua = { "stylua" },
     nix = { "nixfmt" },
+    typescript = { "oxfmt", "injected" },
+    javascript = { "oxfmt", "injected" },
+    sql = { "sql_formatter" },
   },
   format_on_save = {
-    timeout_ms = 500,
+    timeout_ms = 1000,
     lsp_format = "fallback",
   },
 }
+
+require("otter").setup {}
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+  callback = function() require("otter").activate { "sql" } end,
+})
 
 vim.cmd "packadd justify"
 vim.cmd "packadd nvim.undotree"

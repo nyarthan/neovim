@@ -55,6 +55,8 @@
             oxfmt
             ripgrep
             rust-analyzer
+            sql-formatter
+            sqls
             stdenv.cc.cc
             stylua
             tailwindcss-language-server
@@ -80,6 +82,10 @@
             }
             {
               plugin = mini-nvim;
+              optional = false;
+            }
+            {
+              plugin = otter-nvim;
               optional = false;
             }
             {

@@ -33,8 +33,21 @@ vim.lsp.enable "eslint"
 vim.lsp.enable "jsonls"
 vim.lsp.enable "lua_ls"
 vim.lsp.enable "nixd"
+vim.lsp.enable "sqls"
 vim.lsp.enable "ts_ls"
 vim.lsp.enable "yamlls"
+-- Recent Neovim nightlies break nvim-lspconfig's bundled oxfmt root_dir
+-- (insert_package_json -> find on a table). Replace it with vim.fs.root.
+vim.lsp.config("oxfmt", {
+  root_dir = function(bufnr, on_dir)
+    on_dir(
+      vim.fs.root(
+        bufnr,
+        { ".oxfmtrc.json", ".oxfmtrc.jsonc", "oxfmt.config.ts", "package.json", ".git" }
+      ) or vim.fn.getcwd()
+    )
+  end,
+})
 vim.lsp.enable "oxfmt"
 
 local progress = vim.defaulttable()
