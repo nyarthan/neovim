@@ -160,12 +160,15 @@ require("mini.surround").setup {
   },
 }
 
-require("nvim-treesitter").setup {
-  auto_install = false,
-  highlight = { enable = true },
-  indent = { enable = true },
-  additional_vim_regex_highlighting = false,
-}
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function(args)
+    if not pcall(vim.treesitter.start, args.buf) then return end
+    local ok, ts = pcall(require, "nvim-treesitter")
+    if ok and type(ts.indentexpr) == "function" then
+      vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
+  end,
+})
 
 require("nvim-ts-autotag").setup {
   opts = {
