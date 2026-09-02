@@ -57,6 +57,7 @@ vim.opt.hlsearch = true
 vim.o.laststatus = 3
 vim.o.winblend = 0
 
+vim.opt.messagesopt:append "timeout:4000"
 vim.opt.cmdheight = 0
 require("vim._core.ui2").enable {
   enable = true,
@@ -92,7 +93,6 @@ require("vim._core.ui2").enable {
 
     msg = {
       height = 0.25,
-      timeout = 4000,
     },
   },
 }
